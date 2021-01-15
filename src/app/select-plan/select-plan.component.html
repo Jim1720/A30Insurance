@@ -1,0 +1,50 @@
+
+
+ <div class='container'>  
+        <br> 
+        
+        <div class="row justify-content-center">
+
+                <h3 style=" color:goldenrod">Plan Selection</h3> 
+                
+        </div>
+ 
+
+
+    <div style="margin-top: '20px'" *ngFor="let plan of planInfo; let i=index">
+
+        <div style="margin-top:'10px';" class="row justify-content-md-center">
+
+            <div>
+                <button type='button' class="st1 b1 btn btn-outline-primary"
+                        (click)="onPlan(plan.PlanName)">
+                    {{plan.PlanName}}  
+            </button>  
+           </div>
+
+           <div style="margin-left:'20px';color:white;font-size: larger;">
+                   {{plan.PlanLiteral}}
+           </div>
+
+           <br/>
+
+        </div>
+
+    </div>
+
+    <div style="margin-top: '50px'" class='row justify-content-md-center'> 
+    <button type='button' class='st1 b1 btn btn-primary' (click)="onCancel()">
+            Cancel
+    </button> 
+    </div> 
+  
+ 
+
+
+<div class='message justify-content-md-center' style='margin-left: 195px; color:lawngreen'> <br>
+         
+            {{message}}
+         
+</div> 
+
+</div> 

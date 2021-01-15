@@ -1,0 +1,25 @@
+
+ 
+ .marginLeft { margin-left: 180px; }
+ 
+ a { background-color: black; color: white; font-size: large; font-family: arial }
+
+a:hover { color: goldenrod }
+
+.routes { background-color: black }
+
+.gold { color: goldenrod; }
+
+.lawngreen { color: lawngreen }
+ 
+/* for clapasable menu */
+
+h4 { color: dodgerblue; }
+
+ .black { color: black ;}
+ 
+.nav-link { background-color: black; }
+
+.high-link { background-color: black; color: aqua; }
+
+.dropDownLink { color: aqua; }

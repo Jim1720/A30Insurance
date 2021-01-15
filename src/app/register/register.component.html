@@ -1,0 +1,159 @@
+ 
+ <div class='container'>   
+ <br>
+ 
+
+ <div class="row"> <br> </div>
+
+ <div class="row justify-content-md-center"> 
+        <h2>Customer Registration</h2> 
+</div> 
+
+ <div row style='margin-left: 195px' [class]='showPics'>  
+ <!--div style='margin-left: 195px'-->  
+        
+        <br/>
+     
+            
+        <div class="row  justify-content-md-left"> 
+
+            <div class="col-xs3">
+                <label for="custId" class="control-label" >Customer Id:</label> <br>
+                <input class="form-control st1" type='text'  [(ngModel)]="custId"><br>    
+            </div>
+
+            <div class="col-xs3"> 
+                    <label for="custPassword" class="control-label" >Password:</label> <br>
+                    <input class="form-control st1"  type='password'  [(ngModel)]="scustPassword"><br>     
+            </div>
+
+            <div class="col-xs3"> 
+                    <label for="custPassword2" class="control-label" >Confirm Password:</label> <br>
+                    <input class="form-control st1" type='password'  [(ngModel)]="scustPassword2"><br>  
+            </div>
+
+            <div class="col-xs3"> 
+                    <label for="promotionCode" class="control-label" >Promotion Code:</label> <br>
+                    <input class="form-control st1" type='text'  [(ngModel)]="promotionCode"><br>  
+            </div>
+
+
+        </div>  
+
+        <div class="row justify-content-md-left"> 
+
+                <div class="col-xs3">
+                    <label for="custFirst" class="control-label" >First Name:</label> <br>
+                    <input class="form-control st1" type='text'  [(ngModel)]="custFirst"><br>    
+                </div> 
+
+                <div class="col-xs3"> 
+                        <label for="custMiddle" class="control-label" >Middle Name:</label> <br>
+                        <input class="form-control st1" type='text'  [(ngModel)]="custMiddle"><br>     
+                </div>
+
+                <div class="col-xs3"> 
+                        <label for="custLast" class="control-label" >Last Name:</label> <br>
+                        <input class="form-control st1"  type='text'  [(ngModel)]="custLast"><br>     
+                </div>
+                
+         </div>
+
+         <div class="row justify-content-md-left">
+
+                <div class="col-xs3">
+                    <label for="custEmail" class="control-label" >Email:</label> <br>
+                    <input class="form-control st1" type='text'  [(ngModel)]="custEmail"><br>    
+                </div>
+    
+                <div class="col-xs3"> 
+                        <label for="custPhone" class="control-label" >Phone:</label> <br>
+                        <input class="form-control st1"  type='text'  [(ngModel)]="custPhone"><br>     
+                </div>
+         </div>
+ 
+
+        <div class="row justify-content-md-left">
+                <div class="col-xs3">
+                        <label for="custBirthDate" class="control-label" >Birth Date:</label> <br>
+                        <input class="form-control st1" 
+                        placeholder="mmddyy" type='text'  [(ngModel)]="custBirthDate"><br>    
+               </div>
+                <div class="col-xs3">
+                      <label for="custGender" class="control-label" >Gender:</label> <br>
+                      <select class="form-control st1" [(ngModel)]="custGender">
+                        <option>M</option>
+                        <option>F</option>
+                </select>
+                      <!--input class="form-control st1" type='text'  [(ngModel)]="custGender"><br-->    
+               </div>
+        </div>
+
+         <div class="row justify-content-md-left">
+
+                <div class="col-xs3">
+                    <label for="custAddress1" class="control-label" >Address1:</label> <br>
+                    <input class="form-control st1" type='text'  [(ngModel)]="custAddress1"><br>    
+                </div>
+    
+                <div class="col-xs3"> 
+                        <label for="custAddress2" class="control-label" >Address2:</label> <br>
+                        <input class="form-control st1" type='text'  [(ngModel)]="custAddress2"><br>     
+                </div>
+         </div>
+
+         <div class="row justify-content-md-left">
+
+                <div class="col-xs3">
+                    <label for="custCity" class="control-label" >City:</label> <br>
+                    <input class="form-control st1" type='text'  [(ngModel)]="custCity"><br>    
+                </div>
+          
+                <div class="col-xs3"> 
+                        <label for="custState" class="control-label" >State:</label> <br>
+                        <select class="form-control st1" [(ngModel)]="custState">
+                                <option>WA</option>
+                                <option>CA</option>
+                        </select>
+                        <!--input class="form-control st1" type='text'  [(ngModel)]="custState"><br-->     
+                </div>
+         
+        
+                <div class="col-xs3"> 
+                        <label for="custZip" class="control-label" >Zip:</label> <br>
+                        <input class="form-control st1" type='text'  [(ngModel)]="custZip"><br>     
+                </div>
+         </div> 
+  </div> <!-- end show pics -->
+ 
+  <div class="row"> 
+
+    <div class='row justify-content-md-center' style='margin-left: 195px; margin-top: 30px'>
+
+        <div class='col-md-2'></div>
+
+        <div class='col-md-5'> 
+        <button type='button' class='st1 b1 btn btn-primary' (click)="onRegister()">
+                Register Customer
+        </button> 
+        </div> 
+
+        <div class='col-md-1'> 
+        <button type='button' style="color:white" 
+                class='st1 b1 btn btn-outline-primary' (click)="onCancel()"> 
+                Cancel
+        </button> <br>
+        </div>
+
+    
+
+    <div class='message justify-content-md-center' style='margin-left: 195px; color:lawngreen'> <br>
+            <ul><li *ngFor="let message of messages">
+                {{message}}
+            </li></ul>
+    </div> 
+ 
+</div> 
+
+ </div> <!-- container -->
+ 

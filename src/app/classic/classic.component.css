@@ -1,0 +1,12 @@
+
+/* classic css */
+
+h1, h2 { color: dodgerblue; text-align: center }
+h3,p { color: white }
+ 
+.top { font-family: arial; font-size: 45; color:dodgerblue; font-style:italic}
+.bot { font-family: arial; font-size: 35; color: lightskyblue; font-style: italic }
+
+.img { height: 50; width: 50 }
+
+.image-responsive { height: 50; width: 50; }

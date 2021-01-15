@@ -1,0 +1,197 @@
+<div class='container'>   
+ 
+     <br>
+
+     <h4>Claim History Information</h4>
+
+     <div class="row">
+        <div class="col-md-4"> Subscriber/Customer: </div>  
+        <div class="col-md-4"> Identification Number: </div>  
+        <div *ngIf="showHistMessage" class="col-md-4 gold"> {{histMessage}} </div>  
+     </div>
+     <div class="row">
+        <div class="col-md-4 pink"> {{custNames}} </div>  
+        <div class="col-md-4 pink"> {{customerIdentification}} </div>   
+     </div>
+
+     <div *ngFor="let cl of claims; let i=index">
+
+         <br>
+         <div class="row"> 
+            <div class="col-md-4"> Claim Identification: </div>
+            <div class="col-md-4"> Description   </div>  
+            <div class="col-md-4"> Sequence: &nbsp; 
+
+               <a *ngIf="cl.ClaimStatus !== 'Adjusted' 
+                          &&
+                          cl.ClaimStatus !== 'Paid'" 
+                       (click)="adjustClaim(cl)">Adjust</a>
+               
+               <a *ngIf="cl.ClaimStatus !== 'Adjusted' &&
+                         cl.ClaimStatus !== 'Paid'" 
+                        (click)="payClaim(cl)">&nbsp;Pay</a>
+
+            </div>
+         </div> 
+         <div class="row"> 
+            <div class="col-md-4 blue"> {{cl.ClaimIdNumber}} </div>
+            <div class="col-md-4 blue"> {{cl.ClaimDescription}}  </div>
+            <div class="col-md-4 blue"> {{i+1}} {{claimCount}}</div>  
+         </div>  
+         
+         <div class="row"> 
+             <div class="col-md-4"> Patient First: </div>
+             <div class="col-md-4"> Patient Last   </div>   
+             <div class="col-md-4"> Service Date:</div> 
+         </div> 
+         <div class="row"> 
+             <div class="col-md-4 goldenrod"> {{cl.PatientFirst}} </div>
+             <div class="col-md-4 goldenrod"> {{cl.PatientLast}}  </div>   
+             <div class="col-md-4 blue"> {{cl.DateService}}  </div> 
+        </div> 
+
+        <div class="row"> 
+          <div class="col-md-4"> Diagnosis Codes: </div> 
+          <div class="col-md-4"> Physician: </div>  
+          <div class="col-md-4"> Claim Type: </div> 
+       </div> 
+       <div class="row"> 
+           <div class="col-md-4 lawngreen"> {{cl.Diagnosis1 + ' ' + cl.Diagnosis2}} </div>    
+           <div class="col-md-4 orange"> {{cl.Physician}} </div>  
+           <div class="col-md-4 orange"> {{cl.ClaimType}} </div> 
+       </div> 
+
+       <div class="row"> 
+        <div class="col-md-4"> Procedure Codes: </div>  
+        <div class="col-md-4"> Clinic Name: </div>  
+        <div class="col-md-4"> Plan Id: </div> 
+     </div> 
+     <div class="row"> 
+        <div class="col-md-4 lawngreen"> {{cl.Procedure1 + ' ' + cl.Procedure2}} </div>  
+        <div class="col-md-4 red"> {{cl.Clinic}} </div>  
+        <div class="col-md-4 lawngreen"> {{cl.PlanId}} </div> 
+     </div> 
+
+      <div class="row">   
+        <div class="col-md-4"> Date Entered: </div>    
+        <div class="col-md-4"> Claim Status : </div>   
+        <div class="col-md-4"> Claim Service : </div>      
+      </div>
+      <div class="row"> 
+         <div class="col-md-4 red">  {{cl.DateAdded}}  </div>   
+         <div class="col-md-4 goldenrod">  {{cl.ClaimStatus}}  </div>  
+         <div class="col-md-4 goldenrod">  {{cl.Service}}  </div>   
+      </div>
+
+      <div class="row">  
+         <div class="col-md-4"> Total Charge: </div>  
+         <div class="col-md-4"> Plan Amount Covered: </div>    
+         <div class="col-md-4"> Customer Amount Owed : </div>      
+       </div>
+       <div class="row">
+          <div class="col-md-4 blue"> ${{cl.TotalCharge}} </div>  
+          <div class="col-md-4 red">  ${{cl.CoveredAmount}}  </div>   
+          <div class="col-md-4 goldenrod"> ${{cl.BalanceOwed}}  </div>  
+       </div>
+
+      <!-- segmented by claim type -->
+      <!-- db field has to be nchar 1 --> 
+ 
+
+      <div *ngIf="cl.ClaimType === 'Medical'" class='medical'>
+
+            <div class="row">  
+            <div class="col-md-4"> Confine Date: </div>  
+            <div class="col-md-4"> Release Date: </div>        
+              
+            </div>
+            <div class="row">
+               <div class="col-md-4 blue">  {{cl.DateConfine}} </div>  
+               <div class="col-md-4 blue">  {{cl.DateRelease}}  </div>    
+            </div> 
+      </div> 
+
+      <div *ngIf="cl.ClaimType === 'Dental'" class='dental'>
+
+            <div class="row">  
+                 <div class="col-md-4"> Tooth Number: </div>   
+                 <div class="col-md-4">  </div>    
+            </div>  
+            <div class="row">
+                 <div class="col-md-4 blue">  {{cl.ToothNumber}} </div>   
+                 <div class="col-md-4">  </div>    
+            </div> 
+      </div> 
+
+      <div *ngIf="cl.ClaimType === 'Vision'" class='vision'>
+
+                   <div class="row">  
+                       <div class="col-md-4"> Eyeware: </div>   
+                       <div class="col-md-4">  </div>   
+                  </div>
+                  <div class="row">
+                     <div class="col-md-4 orange">  {{cl.Eyeware}} </div>  
+                     <div class="col-md-4">  </div>   
+                  </div> 
+      </div>   
+
+      <div *ngIf="cl.ClaimType === 'Drug'" class='drug'>
+
+                  <div class="row">  
+                       <div class="col-md-4"> Drug Name: </div>   
+                       <div class="col-md-4">  </div>   
+                  </div>
+                  <div class="row">
+                     <div class="col-md-4 orange">  {{cl.DrugName}} </div>   
+                     <div class="col-md-4">  </div>   
+                  </div> 
+        </div>   
+
+        <div *ngIf="cl.ClaimStatus == 'Adjusted'" class="row"> 
+             <div class="col-md-4"> Adjusted by: </div>  
+             <div class="col-md-4"> Adjusted Date: </div>  
+        </div>
+
+        <div *ngIf="cl.ClaimStatus == 'Adjusted'" class="row">  
+            <div class="col-md-4 blue"> {{cl.AdjustingClaimId}}</div> 
+            <div class="col-md-4 blue"> {{cl.AdjustedDate}}</div>
+      </div>
+
+        <div *ngIf="cl.ClaimStatus == 'Adjustment'" class="row"> 
+           <div class="col-md-4"> Adjustement of:  </div>  
+       </div>
+
+       <div *ngIf="cl.ClaimStatus == 'Adjustment'" class="row">  
+          <div class="col-md-4 blue"> {{cl.AdjustedClaimId}}</div> 
+     </div>
+
+     <div *ngIf="cl.ClaimStatus == 'Paid'" class="row"> 
+          <div class="col-md-4"> Payment Date: </div>  
+          <div class="col-md-4"> Payment Amount: </div>  
+    </div>
+
+    <div *ngIf="cl.ClaimStatus == 'Paid'" class="row"> 
+        <div class="col-md-4  aqua"> {{cl.PaymentDate}}  </div>  
+        <div class="col-md-4  aqua"> ${{cl.PaymentAmount}} </div>  
+    </div>
+ 
+
+     </div> <!-- end of loop -->
+
+     
+     <div class="row"><br></div>
+
+     <div class='col-md-2'> 
+      <button type="button" class="st1 b1 btn btn-primary" (click)="onMenu()">
+          Main Menu
+      </button>  
+     </div>  
+
+     <div class="row"><br></div>
+
+     <div class="row">
+         <div class="col-md-4">   </div>  
+         <div class="col-md-4 goldenrod"> {{message}} </div>   
+      </div>
+
+</div>

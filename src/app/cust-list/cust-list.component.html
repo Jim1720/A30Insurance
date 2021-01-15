@@ -1,0 +1,62 @@
+<div class='container'>   
+ 
+    <br>
+
+    <div class="row">
+    <h4>Customer List</h4>
+    </div>
+
+
+    <div *ngFor="let cust of custList; let i=index">
+
+        <div class="row"> 
+          <div class="col-md-4 white"> Identification Number: </div>
+          <div class="col-md-4 white"> Name: </div> 
+          <div class="col-md-4 white"> App: </div> 
+        </div>
+        <div class="row">  
+          <div class="col-md-4 dodgerblue"> {{cust.custId}} </div>  
+          <div class="col-md-4 dodgerblue"> {{cust.custFirst  + " " + cust.custMiddle + " " + cust.custLast}} </div> 
+          <div class="col-md-4 dodgerblue"> {{cust.appID}} </div>   
+
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 white"> Email: </div>
+          <div class="col-md-4 white"> Phone: </div> 
+       </div>
+       <div class="row">
+        <div class="col-md-4 dodgerblue"> {{cust.custEmail}} </div>  
+        <div class="col-md-4 dodgerblue"> {{cust.custPhone}} </div>   
+       </div>
+
+       <div class="row">  
+          <div class="col-md-4 white"> Address: </div>
+       </div>
+       
+       <div class="row"> 
+         <div class="col-md-4 dodgerblue"> {{cust.custAddr1 + " " 
+                                         +  cust.custAddr2 + " "
+                                         +  cust.custCity + " "
+                                         +  cust.custState + " "
+                                         +  cust.custZip}}
+         </div>  
+      </div>
+ 
+       
+       <div class="row"></div>
+       
+       <div class="row"></div>
+       
+       <div class="row"></div>
+        
+      <div class="row">  
+    
+        <div class='col-md-2'> 
+                <button type="button" class="btn btn-secondary" (click)="onReturn()">
+                    Return 
+                </button>  
+        </div>  
+
+
+</div>

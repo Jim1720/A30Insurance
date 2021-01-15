@@ -1,0 +1,59 @@
+
+ npm install -g @angular/cli
+ 
+
+ cd aproject
+
+ ng new A30Insurance
+
+    y to routing
+    enter at CSS highlighted...
+
+ npm install --save core-js@^3
+
+
+ 
+ ** need browser detect in app component
+    to limit colors by browser
+
+    npm install browser-detect.
+
+ COPY APP, ASSETS, INDEX.
+
+
+o tsconfig.json / change these two lines:
+
+     "target": "es5",
+  
+     "lib": [
+        "es2015",
+
+o install in environment folders: 2 files: one for test one for prod.
+export const environment = {
+  production: false,
+  urlPrefix:  "http://localhost:3200/",  // from appservice.ts
+  logging: true
+}; 
+
+o for ie 11 support change this in browserslistrc
+
+not IE 11 # Angular supports IE 11 only as an opt-in. To opt-in, remove the 'not' prefix on this line.
+
+(remove the not!)
+
+o turn on 'AUTO SAVE' in VS CODE so the first run is successful.
+
+   cd A3*
+   ng serve --open
+ 
+ o completed.
+
+ **** stop ie11 caching added to index.
+
+ <!-- turn off caching in ie 11 -->
+
+<meta http-equiv="cache-control" content="no-cache, must-revalidate, post-check=0, pre-check=0">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="pragma" content="no-cache">
+
+ 

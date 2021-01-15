@@ -1,0 +1,295 @@
+ 
+ <div class='container'>  
+        <br><br>
+
+        <div class="row">
+
+                <h3> {{title}} {{custName}} </h3> 
+                <div *ngIf="showAdjustedNumber">
+                        <h4>{{claimIdToAdjust}}</h4>
+                </div>
+
+        </div> <br>
+
+        <div class="row"> 
+
+                <div class="col-md-2">  
+                <div class="list-group">
+                <button [style.color]='mColor' type="button" class="list-group-item list-group-item-action" (click)="onType('m')">
+                        Medical Claim</button>
+                <button [style.color]='dColor' type="button" class="list-group-item list-group-item-action" (click)="onType('d')">
+                        Dental Claim</button>  
+                <button [style.color]='vColor' type="button" class="list-group-item list-group-item-action" (click)="onType('v')">
+                        Vision Claim</button>  
+                <button [style.color]='xColor' type="button" class="list-group-item list-group-item-action" (click)="onType('x')">
+                        Drug Claim</button> 
+                </div>  
+                </div>
+                <!-- image and fields in cols 3-12 -->
+                <div class="col-md-10"> 
+                <div [class]='showPics'>  
+         
+                        <div class="row">
+                
+                                <div class="col-md-10">
+                                
+                <div class="row"><br></div>  
+                <div class="row"> 
+        
+                        <div class='col-md-2'></div>
+                
+                        <div class='col-md-3'> 
+                
+                        <label for='patientFirst' class="control-label">Patient First:</label> <br>
+                        <input class="form-control st1"  type='text' [(ngModel)]="patientFirst"><br> 
+
+                        </div>  
+
+                        <div class='col-md-3'>  
+
+                        <label for="patientLast" class="control-label">Patient Last:</label> <br>
+                        <input class="form-control st1" type='text' [(ngModel)]="patientLast"><br>
+
+                        </div>  
+
+                        <div class='col-md-3'>  
+
+                        <label for="claimDescription" class="control-label">Description:</label> <br>
+                        <input class="form-control st1" type='text' [(ngModel)]="claimDescription"><br>
+
+                        </div>  
+        
+                </div> <!-- end row -->
+
+                <!-- second row: proc diag servce -->
+
+                <div class="row"> 
+        
+                        <div class='col-md-2'></div>
+                
+                        <div class='col-md-3'> 
+                
+                                                
+                                <label for="procedureCodes" class="control-label">Procedure Codes:</label> <br>
+                                <input class="form-control st1" type='text' [(ngModel)]="procedureCodes" placeholder="nnnn"><br> 
+                         
+                        </div>  
+
+                        <div class='col-md-3'>   
+                                                                
+                                <label for="diagnosisCodes" class="control-label">Diagnosis Codes:</label> <br>
+                                <input class="form-control st1" type='text' [(ngModel)]="diagnosisCodes" placeholder="nnnn"><br>  
+                                       
+                        </div>  
+
+                        <div class='col-md-3'>   
+                                                
+                                <label for="claimDateService" class="control-label">Service Date:</label> <br>
+                                <input class="form-control st1" placeholder="mmddyyyy" type='text' [(ngModel)]="claimDateService"><br>  
+
+                        </div>  
+        
+                </div> <!-- end row 2 -->
+
+                <!-- doc clinic tot chg -->
+
+                <div class="row"> 
+        
+                                <div class='col-md-2'></div>
+                        
+                                <div class='col-md-3'> 
+                
+                                        <label for="physician" class="control-label">Doctor:</label> <br>
+                                        <input class="form-control st1" type='text' [(ngModel)]="physician"><br>   
+                                
+                                </div>  
+        
+                                <div class='col-md-3'>         
+                                                                        
+                                        <label for="clinicName" class="control-label">Clinic Name:</label> <br> 
+                                        <input class="form-control st1" type='text' [(ngModel)]="clinicName"><br>   
+                                </div>  
+        
+                                <div class='col-md-3'>    
+                                        <label for="serviceSelect" class="control-label" >Service:</label> <br>   
+                                        <select id="serviceSelect"  
+                                                class='form-control'
+                                               (change)="onServiceChange($event.target.value)">  
+                                                <option  *ngFor="let s of typeServices" 
+                                                        [selected]="s.ServiceName==defaultService"
+                                                        [value]=s.ServiceName>
+                                                        {{s.ServiceName}}
+                                                </option>   
+                                </select>  
+
+                                <!-- ie5 limitation of default select -- select  class="form-control st1" style="color:blue"
+                                                [(ngModel)]="modelService">  
+                                                <option class="form-control st1"
+                                                ng-Selected="s.ServiceName==defaultService"
+                                                *ngFor="let s of typeServices">
+                                                {{s.ServiceName}}
+                                                </option>
+                                </select-->  
+
+                                </div> 
+  
+                                 
+               </div> <!-- end row 3 --> 
+
+                <div class="row"> 
+        
+                <div class='col-md-2'></div>
+                
+                <div class='col-md-3'>  
+                
+                <br>
+              
+                <br>
+                        
+                <!-- show button for type --> 
+
+                <div *ngIf="showMedical">
+
+                        <div class='row'><br></div>
+                        <button style="margin-top: 15px;" class="btn btn-medical" type='button'>
+                                        Medical Claim
+                        </button>
+
+                </div>
+                <div *ngIf="showDental">
+
+                                <div class='row'><br></div>
+                                <button style="margin-top: 15px;" class="btn btn-dental" type='button'>
+                                                Dental Claim
+                                </button> 
+        
+                </div> 
+                <div *ngIf="showVision">
+
+                                <div class='row'><br></div>
+                                <button style="margin-top: 15px;" class="btn btn-vision" type='button'>
+                                                Vision Claim
+                                </button>
+        
+                 </div>
+                <div *ngIf="showDrug">
+
+                                <div class='row'><br></div>
+                                <button style="margin-top: 15px;"  class="btn btn-drug" type='button'>
+                                                Drug Claim
+                                </button>
+        
+                </div> 
+        </div> <!-- end col 1 -->
+                
+                <div class='col-md-3'> 
+
+                    <br>
+               
+                <br>
+
+                <div *ngIf="showMedical">
+
+                        <label for="confineDate" class="control-label">Confine Date:</label> <br>
+                        <input class="form-control st1" placeholder="mmddyyyy" type='text' [(ngModel)]="DateConfine"><br>  
+
+                </div>
+
+                <div *ngIf="showDental">
+
+                                <label for="tootlNumber" class="control-label">Tooth Number:</label> <br>
+                                <input class="form-control st1" type='text' [(ngModel)]="toothNumber"><br>  
+        
+                </div>
+
+                <div *ngIf="showVision">
+
+                        <label for="eyeware" class="control-label">Eyeware:</label> <br>
+                        <input class="form-control st1" type='text' [(ngModel)]="eyeware"><br>  
+
+                </div>
+
+                <div *ngIf="showDrug">
+
+                        <label for="drugName" class="control-label">Drug Name:</label> <br>
+                        <input class="form-control st1" type='text' [(ngModel)]="drugName"><br>  
+
+                </div>
+
+                </div> 
+
+                <div class="col-md-3">   
+
+                <br>
+                
+            
+                <br>
+
+                <div *ngIf="showMedical">
+
+                                <label for="releaseDate" class="control-label">Release Date:</label> <br>
+                                <input class="form-control st1" placeholder="mmddyyyy" type='text' [(ngModel)]="DateRelease"><br>  
+        
+                        </div>
+
+                </div>
+        
+                
+                </div> <!-- bg image end --> 
+
+        </div>
+
+                </div>
+                 
+
+                <div *ngIf="showUnselected">
+
+                        <div class='row'><br></div>
+
+                        
+                        <div class='row'>
+                        
+                                <div class='col-md-2'></div>
+                        
+                                <div class='col-md-4'> 
+                                        <button class="btn btn-warning" type='button'>
+                                                        Please select Claim Type 
+                                        </button>
+                                </div>
+                        </div> 
+
+                </div> 
+                
+                <div class='row'><br></div>
+                
+                <div class="row"> 
+                        
+                        <div class='col-md-2'></div>
+                
+                        <div class='col-md-4'> 
+                                <button class="st1 b1 btn btn-primary" type='button' (click)="onSubmitClaim()">
+                                        Submit Claim
+                                </button>  &nbsp; &nbsp;
+                                <button class="st1 b1 btn btn-primary" type='button' (click)="onCancel()">
+                                                Cancel
+                                 </button> <br>
+                                 
+                                <br>
+                        </div> 
+                
+                        <div class='col-md-4 message' style='color:lawngreen;'> 
+                                <ul><li *ngFor="let message of messages">
+                                        {{message}}
+                                </li></ul>
+                        </div> 
+                        
+                
+                </div> 
+
+        </div> <!-- end of image-->
+
+                </div>
+       
+       </div>
+</div>
+        

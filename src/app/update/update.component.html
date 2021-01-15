@@ -1,0 +1,171 @@
+ 
+  
+ 
+   
+ <div class='container'>  
+        <br> 
+        
+        <div class="row justify-content-left">
+
+                <h3>Customer Information</h3> 
+                
+        </div>
+        <br/> 
+
+        <div  row style='margin-left: 195px' [class]='showPics'>  
+        <!--div style='margin-left: 195px'-->
+
+          
+                <div class="row">
+
+                      
+            
+                        <div class="col-xs3"> 
+                                <label for="entered" class="control-label" >Password:</label> <br>
+                                <input class="form-control st1"  type='password'  [(ngModel)]="entered"><br>     
+                        </div>
+            
+                        <div class="col-xs3"> 
+                                <label for="confirmed" class="control-label" >Confirm Password:</label> <br>
+                                <input class="form-control st1"  type='password'  [(ngModel)]="confirmed"><br>  
+                        </div>
+             
+                     
+                    </div>  
+            
+                    <div class="row">
+            
+                            <div class="col-xs3">
+                                <label for="custFirst" class="control-label" >First Name:</label> <br>
+                                <input class="form-control st1" type='text'  [(ngModel)]="custFirst"><br>    
+                            </div>
+                
+                            <div class="col-xs3"> 
+                                    <label for="custLast" class="control-label" >Last Name:</label> <br>
+                                    <input class="form-control st1" type='text'  [(ngModel)]="custLast"><br>     
+                            </div>
+
+                            <div class="col-xs3"> 
+                                <label for="custMiddle" class="control-label" >Middle Name:</label> <br>
+                                <input class="form-control st1" type='text'  [(ngModel)]="custMiddle"><br>     
+                        </div>
+                     </div>
+            
+                     <div class="row">
+            
+                            <div class="col-xs3">
+                                <label for="custEmail" class="control-label" >Email:</label> <br>
+                                <input class="form-control st1" type='text'  [(ngModel)]="custEmail"><br>    
+                            </div>
+                
+                            <div class="col-xs3"> 
+                                    <label for="custPhone" class="control-label" >Phone:</label> <br>
+                                    <input class="form-control st1"  type='text'  [(ngModel)]="custPhone"><br>     
+                            </div>
+                     </div>
+
+                
+                     <div class="row">
+
+                        <div class="col-xs3">
+                                <label for="custBirthDate" class="control-label" >Birth Date:</label> <br>
+                                <input class="form-control st1"  type='text'  [(ngModel)]="custBirthDate"><br>    
+                       </div>
+                       <div class="col-xs4">
+                        <label for="custGender" class="control-label" >Gen:</label> 
+                                <select class="form-control st1" [(ngModel)]="custGender">
+                                        <option>M</option>
+                                        <option>F</option>
+                                </select>
+                       </div>
+                      
+                        <div class="col-xs3" style='margin-left:15px'>
+                                <label style='margin-left:15px' for="custPlan" class="control-label" >Customer Plan:</label>
+                                <br> 
+                                <p style='margin-left: 15px;font-size: larger;color:white;'> 
+                                   {{custPlan}}
+                                </p>
+                        </div>    
+                    </div>
+                     <div class="row">
+            
+                            <div class="col-xs3">
+                                <label for="custAddress1" class="control-label" >Address1:</label> <br>
+                                <input class="form-control st1" type='text'  [(ngModel)]="custAddress1"><br>    
+                            </div>
+                   
+                            <div class="col-xs3"> 
+                                    <label for="custAddress2" class="control-label" >Address2:</label> <br>
+                                    <input class="form-control st1" type='text'  [(ngModel)]="custAddress2"><br>     
+                            </div>
+                     </div>
+            
+                     <div class="row">
+            
+                            <div class="col-xs3">
+                                <label for="custCity" class="control-label" >City:</label> <br>
+                                <input class="form-control st1" type='text'  [(ngModel)]="custCity"><br>    
+                            </div>
+                      
+                            <div class="col-xs3"> 
+                                <label for="custState" class="control-label" >State:</label> <br>
+                                <select class="form-control st1" [(ngModel)]="custState">
+                                        <option>WA</option>
+                                        <option>CA</option>
+                                </select>
+                                <!--input class="form-control st1" type='text'  [(ngModel)]="custState"><br-->     
+                        </div>
+                 
+                     
+                    
+                            <div class="col-xs3"> 
+                                    <label for="custZip" class="control-label" >Zip:</label> <br>
+                                    <input class="form-control st1" type='text'  [(ngModel)]="custZip"><br>     
+                            </div>
+                     </div>
+                     <div class='row'>
+                             <div style="color:gold" class='control-label'>        
+                                   {{mainMessage}}
+                             </div>
+                     </div> 
+            
+            
+            
+            
+            
+       
+        </div>   <!-- end of show pics -->
+ 
+        
+       
+       <div class="row" style="margin-top: 20px"> 
+               
+           <div class='col-md-2'></div>
+       
+           <div class='col-md-2'> 
+                   <button type="button" class="st1 b1 btn btn-primary" (click)="onUpdate()">
+                       Update 
+                   </button>  
+           </div>  
+           <div class='col-md-2'> 
+                <button type="button" class="st1 b1 btn btn-primary" (click)="onCancel()">
+                    Menu
+                </button>  
+           </div>  
+        
+       
+       </div> 
+
+       <div class="row">
+
+            <div class='message' style='margin-left: 195px; color:lawngreen'> 
+                <ul><li *ngFor="let message of messages">
+                        {{message}}
+                    </li></ul>
+            </div> 
+
+       </div>
+       <div class="row" style='margin-left: 195px'><br></div>
+       
+       </div>
+        

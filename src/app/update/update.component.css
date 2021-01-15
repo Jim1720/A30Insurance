@@ -1,0 +1,43 @@
+p { color: white}
+
+/* h3 is outside of form keep it white always */
+h3 { color: white; margin-left: 400px }
+
+.one { float: left; width: '700px '; margin: 75px; border-width: 2px; border-color: gray;}
+ 
+
+.form { margin-left: 350px; margin-top: 50px;    } 
+
+/* .control-label { font-size: large; color: var(--label-color) } */
+
+.control-label { font-size: large; color: dodgerblue }
+
+.message { color: lawngreen } 
+
+.bg-image {padding:40px; margin-left: 175px; background-image : url('../../assets/road.jpg'); background-size: 100% 100% }
+
+/* these two classes use css variable */
+
+.bg-outline {padding:40px; margin-left: 175px; border-style: solid; border-width: 1px; border-color: var(--user-color)  }
+
+.bg-solid {padding:40px; margin-left: 175px; background-color : var(--user-color) }
+ 
+
+input { color: black; font-family: Arial, Helvetica, sans-serif  }
+
+:root {
+
+    --user-color: goldenrod; 
+    --label-color: white;
+    --h-color: goldenrod;
+}
+
+/*-- from A40 buttons */
+
+.st1 { font-family: Arial;
+    font-size: larger }
+
+
+.b1:hover { color: goldenrod; background-color: black }
+.b1 { color: white;  background-color: black; margin: 2px;
+   font-size:  larger;  }

@@ -1,0 +1,188 @@
+<div class='main container'> 
+ 
+<div *ngIf="useLinks">   
+
+    <!--div style="background-color:black" class="row marginLeft" -->   
+    <!-- removed better spacing.-->
+    <!-- [ngClass] = "{'high-link': historySelected, 'nav-link': !historySelected}" -->  
+
+    <div>
+
+        <nav style="background-color:black" class="navbar" margin="230px 30px 30px 30px">
+
+            <a style="color:dodgerblue" class="navbar-brand" href="#">A30 Insurance</a> 
+            <a *ngIf="out" routerLink="/splash" [ngClass] = "{'high-link': splashSelected, 'nav-link': !splashSelected}" routerLinkActive="active" class="nav-link" href="#">Splash</a> 
+            <a *ngIf="out" routerLink="/classic"  [ngClass] = "{'high-link': classicSelected, 'nav-link': !classicSelected}"   href="#">Classic</a>
+            <a *ngIf="out" routerLink="/register" [ngClass] = "{'high-link': registerSelected, 'nav-link': !registerSelected}"class="nav-link"   href="#">Register</a>
+            <a *ngIf="out" routerLink="/signin"   [ngClass] = "{'high-link': signinSelected, 'nav-link': !signinSelected}"class="nav-link"   href="#">Sign In</a>
+            <a *ngIf="in"  routerLink="/hub" [ngClass] = "{'high-link': menuSelected, 'nav-link': !menuSelected}"      class="nav-link"   href="#">Menu</a>
+            <a *ngIf="in"  routerLink="/update" [ngClass] = "{'high-link': updateSelected, 'nav-link': !updateSelected}"  class="nav-link"   href="#">Update</a>
+            <a *ngIf="in"  routerLink="/claim"  [ngClass] = "{'high-link': claimSelected, 'nav-link': !claimSelected}"   class="nav-link"   href="#">Claim</a>
+            <a *ngIf="in"  routerLink="/history" [ngClass] = "{'high-link': historySelected, 'nav-link': !historySelected}" class="nav-link"   href="#">History</a> 
+            <a *ngIf="in"  routerLink="/signout"  class="nav-link"   href="#">Sign Out</a> 
+            <a *ngIf="out" routerLink="/admin" [ngClass] = "{'high-link': adminSelected, 'nav-link': !adminSelected}"   class="nav-link"   href="#">Admin</a> 
+      
+
+            <a *ngIf="in"  routerLink="/update"     routerLinkActive="active" class="gold" href="#">
+                {{displayName}}
+            </a> 
+
+            <a *ngIf="registering"  routerLink="/splash"  routerLinkActive="active" class="gold" href="#">
+                ..Registration in Progress..
+            </a> &nbsp;
+
+            <a *ngIf="out" routerLink="/about"  [ngClass] = "{'high-link': aboutSelected, 'nav-link': !aboutSelected}"   routerLinkActive="active" href="#">About</a> &nbsp;   
+            <a *ngIf="menuSwitchOptionEnabled" routerLink="/splash"    routerLinkActive="active" (click)="onSwitchMenu()" href="#">
+                Menu
+            </a> &nbsp; 
+
+            <!-- controls form formatting pic, border, solid, none backgrounds -->
+            <a *ngIf="showPicControls" routerLink={{savePath}}    routerLinkActive="active" (click)="onPics()" href="#">
+                {{picsLit}}
+            </a> &nbsp; 
+            <!-- when pics lit is 'border' or 'solid' display color link to toggle -->
+            <a  *ngIf="showColorControls" routerLink={{savePath}}
+                routerLinkActive="active" (click)="onColors()"
+                [style.color]="colorLit"  href="#">
+                {{colorLit}}
+            </a> &nbsp;  
+   
+            <!-- not used future -->
+            <!-- historical page mode links --> <!-- need to add href if you use these in future.-->
+            <!-- commented out due to compile errors  
+            <a *ngIf="histPage1" routerLink="/history"    routerLinkActive="active" (click)="onHistMoveMove('next')">
+                Next 
+            </a> &nbsp; 
+            <a *ngIf="histPage1" routerLink="/history"    routerLinkActive="active" (click)="onHistMove('prev')">
+                Prev 
+            </a> &nbsp; 
+            <a *ngIf="histPage1" routerLink="/history"    routerLinkActive="active" (click)="onHistMove('first')">
+                First 
+            </a> &nbsp; 
+            <a *ngIf="histPage1" routerLink="/history"    routerLinkActive="active" (click)="onHistMove('last')">
+                Last 
+            </a> &nbsp; 
+
+             !-- historical scroll mode links  
+            <a *ngIf="histScroll1" routerLink="/history" routerLinkActive="active" (click)="onHistMove('top')">
+                Top 
+            </a> &nbsp; 
+
+            <  toggle hist display  
+            <a *ngIf="histScroll1 || histPage1" routerLink="/history" routerLinkActive="active" (click)="setFormat()">
+                Toggle
+            </a> &nbsp; 
+
+             end of comments for unused code. -->
+            
+    </nav>
+ 
+
+    </div> <!-- end row -->
+
+</div> 
+
+<!-- any route clicked below will cause isExpanded to be changed to false. -->
+        
+<div *ngIf="useMenu" class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container"> 
+    
+            <div class="navbar-header"> 
+                 
+                    <div class="collapse" id="navbarToggleExternalContent" style="color:white"
+                         *ngIf="isExpanded">
+    
+                        <div *ngIf="out"><h4><b>Register</b></h4>
+                        <p>
+                            New Customers must first register<br />
+                            to use this site 
+                            <br><a routerLink="/register"  class='dropDownLink' routerLinkActive="active">Register</a> &nbsp;
+                        <br /></p></div>
+    
+                        <div *ngIf="out"><h4><b>Existing Customers</b></h4>
+                        <p>
+                            Returning Customers must sign-in<br />
+                            to use this site
+                            <br><a  routerLink="/signin"  class='dropDownLink'    routerLinkActive="active">Sign In</a>&nbsp;
+                        <br /></p></div>
+    
+                        <div *ngIf="out"><h4><b>Splash</b></h4>
+                        <p>
+                            Default Splash Menu<br /> 
+                            <br/><a  routerLink="/splash"      routerLinkActive="active">Splash</a> &nbsp;   
+                        <br /></p></div>
+    
+                        <div *ngIf="out"><h4><b>Classic</b></h4>
+                        <p>
+                            Alternate Classic Menu
+                            <br /><a routerLink="/classic"     routerLinkActive="active">Classic</a> &nbsp;  
+                        <br /></div>
+    
+                        <div *ngIf="out"><h4><b>Admin</b></h4>
+                        <p>
+                            Administrator Menu<br /> 
+                           <br /> <a routerLink="/admin"      routerLinkActive="active">Admin</a> &nbsp;
+                        <br /></p></div>
+                        <div *ngIf="in"><h4><b>Update</b></h4>
+                            <p>
+                                Update<br />
+                                Info
+                                <br /><a routerLink="/update"       routerLinkActive="active">Claim</a> &nbsp; 
+                            <br /></p></div>
+                        <div *ngIf="in"><h4><b>Update</b></h4>
+                        <p>
+                            Submit<br />
+                            Claim
+                            <br /><a routerLink="/claim"       routerLinkActive="active">Claim</a> &nbsp; 
+                        <br /></p></div>
+
+                        <div *ngIf="in"><h4><b>History</b></h4>
+                        <p>
+                            Show <br />
+                            Claim History 
+                            <br /><a routerLink="/history"     routerLinkActive="active">History</a> &nbsp; 
+                        <br /></p></div>
+    
+                    </div>
+                <div>
+                   
+                <nav class="navbar black"> 
+                    <label class="black" type="button" data-toggle="collapse"
+                            data-target="#navbarToggleExternalContent"
+                            aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation"
+                            (click)="isExpanded = !isExpanded" [attr.aria-expanded]="!isExpanded">
+                        <button style="color:white; Background:black;">Start</button>
+                    </label>
+      
+    
+                    <label style="font-size: x-large; font-family:Arial; color:gold; font-style:italic">
+                        &nbsp; Your Day with new insurance !!
+                    </label> 
+
+                    <a *ngIf="in"  routerLink="/update"     routerLinkActive="active" class="gold">
+                       &nbsp; &nbsp;  {{signedName}}
+                    </a>
+    
+                    <a routerLink="/splash"    routerLinkActive="active" (click)="onMenu()">
+                        &nbsp; &nbsp; Menu
+                    </a> &nbsp; 
+    
+                    </nav>
+    
+                </div>
+    
+            </div>
+    
+        </div>
+    
+
+</div>
+
+
+<div class="routes"> 
+
+<router-outlet></router-outlet>
+
+</div>
+
+</div>

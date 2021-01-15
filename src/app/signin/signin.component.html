@@ -1,0 +1,94 @@
+ 
+ <div class='container'>
+
+
+        <div class="row"><br></div>
+        
+        <div class="row"><br></div>
+
+        <div class="row">
+
+                        <div class='col-md-4'></div>
+        
+                        <div class='col-md-4'> 
+        
+                                <h3>Customer Sign On Screen</h3> 
+                                
+                        </div>
+        
+        </div>
+ 
+        
+
+        <div class="row"><br></div>
+        
+        <div class="row"><br></div>
+ 
+                
+        <div class="row"> 
+
+                <div class='col-md-4'></div>
+
+                <div class='col-md-4'> 
+
+                        <label for='custId' class="control-label">Customer Id:</label> <br>
+                        <input class="form-control st1" type='text' [formControl]="custId"><br><br>
+
+                        <label for="custPassword" class="control-label">Password:</label> <br>
+                        <input class="form-control st1"  type='password' [formControl]="custPassword"><br>
+
+                </div>
+        </div>
+        <div class="row"><br></div>
+        
+        <div class="row"><br></div>
+        
+        <div class="row"><br></div>
+        
+        <div class="row">  
+
+
+                <div class='col-md-4'></div>
+
+                <div class='col-md-2'> 
+
+                        <button type='button' class='st1 b1 btn btn-primary' (click)="onSubmit()">
+                                        Sign In 
+                        </button> 
+                </div> 
+
+        </div>
+
+        <div class="row"><br></div>
+         
+        <div class="row"> 
+
+                <div class='col-md-4'></div>
+        
+                <div class='col-md-4'>  
+
+                        <div class='message'>
+                                {{message}}
+                        </div> 
+                        
+                </div>
+
+        </div>
+     
+        <div class="row"><br></div>
+        
+        <div class="row"><br></div>
+
+        <div class="row">
+
+                        <div class='col-md-4'></div>
+        
+                        <div class='col-md-4'> 
+        
+                                <h3>Looking forward to serving you!</h3> 
+                                
+                        </div>
+        
+                </div>
+
+</div> 
