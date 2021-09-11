@@ -1,0 +1,9 @@
+
+
+.st1 { font-family: Arial;
+    font-size: larger }
+
+
+.b1:hover { color: goldenrod; background-color: black }
+.b1 { color: white; margin: 2px;
+   font-size:  larger;  }

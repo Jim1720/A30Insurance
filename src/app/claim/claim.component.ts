@@ -14,6 +14,9 @@ import { ServiceService } from '../service.service';
 import ServiceInfo from '../ServiceInfo';
 import { PlanService } from '../plan.service';
 import PlanInfo from '../PlanInfo';
+import { ScreenStyleNotificationSerevice } from '../screen.style.nofification.service';
+import { ScreenStyleInterfaceService } from '../screen.style.interface.service';
+import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
 
 @Component({
   selector: 'app-claim',
@@ -36,6 +39,8 @@ export class ClaimComponent implements OnInit {
               private tokenService: TokenService,
               private serviceService: ServiceService,
               private planService: PlanService,
+              private notificationService: ScreenStyleNotificationSerevice,
+              private styleInterface: ScreenStyleInterfaceService,
               private router: Router) { 
 
 
@@ -43,7 +48,7 @@ export class ClaimComponent implements OnInit {
   }
  
   allServices: ServiceInfo[] = []; // ServiceName, ClaimType, Cost.
-  typeServices: ServiceInfo[]; // filter for claim type // display on screen  
+  typeServices: ServiceInfo[] = []; // filter for claim type // display on screen  
   serviceSelect : string = ''  // = '' on new claims or = service on adj / to select list entry.   
   custPlanName: string = ''; 
 
@@ -62,23 +67,23 @@ export class ClaimComponent implements OnInit {
   costParm = { Covered: '', Balance: ''}; 
   defaultClaimType: string = 'm'; 
 
-  title: string = "Enter new claim for customer"
+  title: string = "New Claim";
   messages : string[] = [];
   showAdjustedNumber: boolean = false;
   goodEdit: boolean = false;
   defaultPlanNumber: string = "Plan1";
-  today: string; 
-  yy: number; // added 3.1.20
-  time: string; 
+  today: string = '';
+  yy: number = 0;// added 3.1.20
+  time: string = '';
   showMedical: boolean = false;
   showDental: boolean = false;
   showVision: boolean = false;
   showDrug: boolean = false; 
   showUnselected: boolean = true;
-  custName: string;
+  custName: string = '';
   processAdjustment: boolean = false;
   claimIdToAdjust: string = '';
-  claimToAdjust: Claim = null;
+  claimToAdjust: any = null;
   claimStatus: string = '';
   adjustedDate: string = ''; 
 
@@ -110,8 +115,8 @@ export class ClaimComponent implements OnInit {
   // formattedDates for database: fdDateService 
   fdDateService: string = '';
   fdEntryDate: string = '';
-  fdDateConfine: string;
-  fdDateRelease: string;
+  fdDateConfine: string = '';
+  fdDateRelease: string = '';
 
   // highlight claim types
   mColor: string = '';
@@ -125,6 +130,18 @@ export class ClaimComponent implements OnInit {
   hcolor: string = '';
   fieldColor: string = ''; // blue adjustment fields (blue adjustment logic)
  
+  headerStyle: string = '';
+  labelStyle: string = '';
+  messageStyle: string = '';
+  claimStyleClass: string = '';
+
+  defaultLabelColor: string = "dodgerblue";
+  defaultMessageColor  : string = "burleywood";
+  defaultHeaderColor : string = "white";
+
+  userStyle : string = '';
+
+  lineMessage = "";
   
   ngOnInit() {
  
@@ -136,6 +153,42 @@ export class ClaimComponent implements OnInit {
 
         }
 
+        debugger;
+        var Claim = "claim";
+        var Style = "Style";
+        var defaultLabelColor = "dodgerblue";
+        var defaultHeaderColor = "white";
+        var defaultMessageColor = "white";
+        var Solid = "solid";
+        var semi = ";"; 
+        var headerOffset = "margin-left:  90px; ";  
+
+        var screenStyleObject = this.styleInterface.getStyleObject(Claim);
+        if(screenStyleObject != null)
+        {
+          
+          // external class = style link value 
+          this.claimStyleClass = screenStyleObject.externalClass;
+          this.userStyle = 'color: ' + screenStyleObject.userColor;
+          if(screenStyleObject.internalClass == Solid)
+          {
+            this.userStyle = 'background-color: ' + screenStyleObject.userColor;
+          }
+          this.labelStyle = 'color: ' + screenStyleObject.labelColor;
+          this.headerStyle = 'color: ' + screenStyleObject.headerColor  
+          this.messageStyle = 'color: ' + screenStyleObject.messageColor;
+
+        }
+        else
+        { 
+            // no style object exists until user clicks style link.  
+            this.claimStyleClass = Style;
+            this.userStyle = 'color: ' + " white; ";
+            this.labelStyle = 'color: ' + defaultLabelColor;
+            this.headerStyle = 'color: ' + defaultHeaderColor  
+            this.messageStyle = 'color: ' + defaultMessageColor;
+
+        } 
  
         // when type is set/changed 'filterTypeServices' must 
         // be called to sync services for that claim type.
@@ -146,7 +199,7 @@ export class ClaimComponent implements OnInit {
             (serviceInfo: ServiceInfo[]) => {
 
                 this.allServices = serviceInfo;
-                console.log('ng init ' + serviceInfo.length + ' services read.');
+             //   console.log('ng init ' + serviceInfo.length + ' services read.');
                 this.ContinueInit();
 
 
@@ -163,7 +216,8 @@ export class ClaimComponent implements OnInit {
 
        for(var i = 0; i < this.allServices.length; i++) {
 
-           var row = this.allServices[i];
+           var row : any = null;
+           row = this.allServices[i];
            console.log('----');
            console.log('all service row: row: ' + row);
            for(var a in row) {
@@ -178,7 +232,8 @@ export class ClaimComponent implements OnInit {
 
       for(var i = 0; i < this.typeServices.length; i++) {
 
-          var row = this.typeServices[i];
+          var row: any = null;
+          row = this.typeServices[i];
           console.log('----');
           console.log('type service row: row: ' + row);
           for(var a in row) {
@@ -228,25 +283,27 @@ export class ClaimComponent implements OnInit {
         
      // this.showPics = this.appService.getFormat();
 
-     this.appService.subject.subscribe(
+     this.notificationService.subject.subscribe(
       // import ColorInfoObject from '../ColorInfoObject';
       // next branch
       (cio:ColorInfoObject) => {
 
-           // change color and format
-           this.showPics = cio.format;
-           this.useColor = cio.newColor;  
-           this.labelColor = cio.labelColor; 
-           this.hcolor = cio.hColor; 
-           let root = document.documentElement; 
-           root.style.setProperty('--user-color', this.useColor); 
-           root.style.setProperty('--h-color', this.hcolor);
-           root.style.setProperty('--label-color', this.labelColor); 
+        debugger;
+
+        this.claimStyleClass = cio.externalClass;
+        this.userStyle = 'color: ' + cio.userColor;
+        if(cio.externalClass == "bg-solid")
+        {
+            this.userStyle = 'background-color: ' + cio.userColor;
+        }
+        this.labelStyle = 'color: ' + cio.labelColor;
+        this.headerStyle = 'color: ' + cio.headerColor;
+        this.messageStyle = 'color: ' + cio.messageColor;  
              
       },
 
       // error branch
-      (Error) => {
+      (Error:any) => {
 
           console.log('Error in claim subscription ' + Error);
       }
@@ -254,20 +311,22 @@ export class ClaimComponent implements OnInit {
      ); 
   }
 
-  onServiceChange(name: string) {
-    
+  onServiceChange(target: any) {
+    // 8.1.21 value removed  - deterimine value of target fix needed
+    // todo: get value 
     debugger;  
-    this.modelService = name.toString().trim();
+    var value:any  = target.value;
+    //this.modelService = name.toString().trim();
   }
  
 
-  filterTypeServices(selectedValue) {
+  filterTypeServices(selectedValue:any) {
 
      // clear and filter a new service list based on 
      // selected claim type.
      // selectedValue = m,d,v,x
      // type service = "Medical", "Dental";
-     console.log('* filter type services');
+   //  console.log('* filter type services');
      debugger;
      var type = 'unknown';
      switch(selectedValue) {
@@ -283,7 +342,7 @@ export class ClaimComponent implements OnInit {
      this.loadTypeServices(selectedValue); 
   } 
 
-  loadTypeServices(type) {
+  loadTypeServices(type:any) {
 
       debugger;
       var outIndex = 0;   
@@ -372,7 +431,8 @@ export class ClaimComponent implements OnInit {
       this.custPlanName = this.storageService.getPlanName().toString().trim()
       if(this.custPlanName === undefined || this.custPlanName === null || this.custPlanName === '') {
         
-        this.messages[0] = "Customer has no assigned plan. Please select one.";
+        //this.messages[0] = "Customer has no assigned plan. Please select one.";
+        this.lineMessage = "Customer has no assigned plan. Please select one.";
         return;
       }
      this.performEdits();
@@ -469,8 +529,8 @@ export class ClaimComponent implements OnInit {
     var closureThis = this; 
   
 
-    console.log("check after service change probable blow up undefined");
-    console.log(" this.service = " + this.service);
+ //   console.log("check after service change probable blow up undefined");
+  //  console.log(" this.service = " + this.service);
 
     this.calculateCoveredAmountForPlan(claim, closureThis);
    
@@ -479,7 +539,7 @@ export class ClaimComponent implements OnInit {
 
   calculateCoveredAmountForPlan(claim:Claim, closureThis:any)  {
 
-    console.log('calc cost - claim.Service is:' + claim.Service);
+//    console.log('calc cost - claim.Service is:' + claim.Service);
     // get cost from type services matching service select.
     // get customer plan for percent covered.
  
@@ -503,7 +563,7 @@ export class ClaimComponent implements OnInit {
       (planInfoData:any) => {
 
           
-         console.log(" *** plan info read from service ");  
+      //   console.log(" *** plan info read from service ");  
          var planInfo: PlanInfo[] = planInfoData; 
 
           // lookup the percent covered in the plan
@@ -535,7 +595,7 @@ export class ClaimComponent implements OnInit {
           var covered = (percent * serviceCost) / 100; 
           var balance = serviceCost - covered;
 
-          console.log('calc results: covered:' + covered + ' balance:' + balance);
+        //  console.log('calc results: covered:' + covered + ' balance:' + balance);
           debugger;
           claim.TotalCharge = serviceCost.toString();
           claim.CoveredAmount = covered.toString();
@@ -561,6 +621,7 @@ export class ClaimComponent implements OnInit {
   performEdits() {
  
       this.errors = false; 
+      this.lineMessage = "";
 
       this.messages = [];
       this.editFields();
@@ -572,7 +633,8 @@ export class ClaimComponent implements OnInit {
       if(this.registeredClaimType == 'u') {
 
            this.errors = true;
-           this.messages[0] = "A claim type must be selected from menu at left.";
+           // this.messages[0] = "A claim type must be selected from menu at left.";
+           this.lineMessage = "A claim type must be selected from menu at left.";
            return;
 
       } 
@@ -596,7 +658,8 @@ export class ClaimComponent implements OnInit {
       }
       if(serviceFound == false) { 
 
-        this.messages[0] = "Please select a service.";
+        //this.messages[0] = "Please select a service.";
+        this.lineMessage = "Please select a service.";
         this.errors = true; 
         return;
       }   
@@ -610,7 +673,8 @@ export class ClaimComponent implements OnInit {
       this.dateService.editDate(editDateParm);  
       if(!editDateParm.valid) { 
 
-            this.messages[0] = editDateParm.message;
+            //this.messages[0] = editDateParm.message;
+            this.lineMessage = editDateParm.message;
             this.errors = true; 
             return;
       }  
@@ -628,7 +692,8 @@ export class ClaimComponent implements OnInit {
           debugger;
           this.dateService.editDate(editDateParm);  
               if(!editDateParm.valid) { 
-                this.messages[0] = editDateParm.message; 
+                // this.messages[0] = editDateParm.message;  
+                this.lineMessage = editDateParm.message;
                 this.errors = true;
                 return;
               }  
@@ -646,7 +711,8 @@ export class ClaimComponent implements OnInit {
             this.dateService.editDate(editDateParm); 
 
             if(!editDateParm.valid) { 
-              this.messages[0] = editDateParm.message; 
+              //this.messages[0] = editDateParm.message; 
+              this.lineMessage = editDateParm.message;
               this.errors = true;
               return;
             } 
@@ -661,12 +727,14 @@ export class ClaimComponent implements OnInit {
           var service = new Date(this.claimDateService); 
 
           if (confine > release) { 
-            this.messages[0] = 'confine date is later than release date.';
+            //this.messages[0] = 'confine date is later than release date.'; 
+            this.lineMessage = 'confine date is later than release date.';
             this.errors = true;
             return;
           }  
           if (service < confine || service > release) {
-            this.messages[0] = 'service date not within confine dates.';
+            // this.messages[0] = 'service date not within confine dates.'; 
+            this.lineMessage = 'service date not within confine dates.';
             this.errors = true;
             return;
           }  
@@ -677,7 +745,8 @@ export class ClaimComponent implements OnInit {
          
         if( isNaN(parseFloat(this.toothNumber)) == true)  {
 
-          this.messages[0] = 'invalid tooth number';
+          // this.messages[0] = 'invalid tooth number'; 
+          this.lineMessage = 'invalid tooth number';
           this.errors = true;
           return;
 
@@ -688,7 +757,8 @@ export class ClaimComponent implements OnInit {
 
           if(this.eyeware.length === 0) {
 
-            this.messages[0] = 'value for eyeware required on vision claim.';
+           // this.messages[0] = 'value for eyeware required on vision claim.'; 
+            this.lineMessage = 'value for eyeware required on vision claim.';
             this.errors = true;
             return;
 
@@ -701,7 +771,8 @@ export class ClaimComponent implements OnInit {
 
         if(this.drugName.length === 0) {
 
-          this.messages[0] = 'value for drug name required on drug claim.';
+         // this.messages[0] = 'value for drug name required on drug claim.'; 
+          this.lineMessage= 'value for drug name required on drug claim.';
           this.errors = true;
           return;
 
@@ -778,8 +849,8 @@ export class ClaimComponent implements OnInit {
 
         debugger;
         console.log('add claim:' + Error);
-        this.messages[0] = "Could not add claim: " + Error;  
-
+        //this.messages[0] = "Could not add claim: " + Error;  
+        this.lineMessage = "Could not add claim: " + Error; 
       }
       
     ); 
@@ -814,8 +885,9 @@ export class ClaimComponent implements OnInit {
       (Error) => {
 
         debugger;
-        console.log('stamp claim:' + Error);
-        this.messages[0] = "Could not stamp claim: " + Error;  
+        console.log('errpr in stamp claim:' + Error);
+        //this.messages[0] = "Could not stamp claim: " + Error;  
+        this.lineMessage = "Could not stamp claim: " + Error; 
 
       }
       
@@ -902,9 +974,14 @@ export class ClaimComponent implements OnInit {
      }
        
      this.goodEdit = false;
+
+     this.lineMessage = "";
+     var prefix = " * ";
      
      for(var item of msg) {
        this.messages.push(item);
+       this.lineMessage += prefix;
+       this.lineMessage += item;
      }
 
 
@@ -948,19 +1025,19 @@ export class ClaimComponent implements OnInit {
  
     }
 
-    readClaimToAdjust(claimIdToAdjust, closureThis) {  
+    readClaimToAdjust(claimIdToAdjust: string, closureThis: any) {  
 
       let result : boolean = false;
   
       this.claimService.readClaim(claimIdToAdjust).subscribe(
   
-        (claim:Claim) => {
+        (claim:any) => {
    
           debugger;
           result = true;  
           closureThis.showAdjustedNumber = true;  // show on form at top.
           closureThis.claimToAdjust = claim[0];
-          console.log('read claim to adj - cta/s is ' + closureThis.claimToAdjust.Service); 
+       //   console.log('read claim to adj - cta/s is ' + closureThis.claimToAdjust.Service); 
           // 
           closureThis.setScreenFields();
           closureThis.messages[0] = "Success - claim read to adjust."; 
@@ -972,7 +1049,8 @@ export class ClaimComponent implements OnInit {
         (Error) => {
   
           debugger;
-          this.messages[0] = "Could not read claim: to adjust " + Error;  
+          //this.messages[0] = "Could not read claim: to adjust " + Error;  
+          this.lineMessage = "Could not read claim: to adjust " + Error;  
         } 
   
       );  
@@ -988,7 +1066,10 @@ export class ClaimComponent implements OnInit {
         // copy data from 'claimToAdjust' to screen fields before display
         // set up adjusted claim id number and adjusting claim id number too.
 
-        this.messages[0] = `Claim Id ${this.claimIdToAdjust} being adjusted by this new claim.`;
+        //this.messages[0] = `Claim Id ${this.claimIdToAdjust} being adjusted by this new claim.`;
+        
+        this.lineMessage = `Claim Id ${this.claimIdToAdjust} being adjusted by this new claim.`;
+       
         this.title = "Claim Adjustment";
               
         // initially set fields for adjusting claim.

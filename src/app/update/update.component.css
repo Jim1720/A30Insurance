@@ -10,27 +10,28 @@ h3 { color: white; margin-left: 400px }
 
 /* .control-label { font-size: large; color: var(--label-color) } */
 
-.control-label { font-size: large; color: dodgerblue }
+.control-label { font-size: large; margin-top: 15px;  }
 
 .message { color: lawngreen } 
 
-.bg-image {padding:40px; margin-left: 175px; background-image : url('../../assets/road.jpg'); background-size: 100% 100% }
+.bg-style { margin-left: 210px;
+            background-image: none;
+            border: none;
+            background-color: black;}
+
+.bg-image {padding:20px 50px 20px 50px; margin-left: 175px;
+           background-image : url('../../assets/road.jpg'); background-size: 100% 100% }
 
 /* these two classes use css variable */
 
-.bg-outline {padding:40px; margin-left: 175px; border-style: solid; border-width: 1px; border-color: var(--user-color)  }
+.bg-outline {padding: 5px 40px 5px 40px; margin-left: 175px;
+      border-style: solid; border-width: 2px;  }
 
-.bg-solid {padding:40px; margin-left: 175px; background-color : var(--user-color) }
+.bg-solid {  padding: 5px 40px 5px 40px; margin-left: 175px; }
  
 
 input { color: black; font-family: Arial, Helvetica, sans-serif  }
-
-:root {
-
-    --user-color: goldenrod; 
-    --label-color: white;
-    --h-color: goldenrod;
-}
+ 
 
 /*-- from A40 buttons */
 

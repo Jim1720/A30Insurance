@@ -18,7 +18,7 @@ export class CustListComponent implements OnInit {
 
   message: string = '';
   result: string = '';
-  custList : Cust[];
+  custList : Cust[] = [];
 
   ngOnInit() { 
 

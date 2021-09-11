@@ -16,7 +16,7 @@ import { componentFactoryName } from '@angular/compiler';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit, AfterViewInit { 
+export class RegisterComponent  { 
  
   messages: string[] = [];
   message: string = ''; // comp error 2.24
@@ -36,16 +36,11 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   custCity: string = '';
   custState: string = 'WA'; // for drowdown
   custZip: string = ''; 
-  promotionCode: string = '';
-  showPics: string;
-
-  goodEdit: boolean = false;
- 
-  useColor: string = '';
-  hColor: string = '';
-  labelColor: string = '';
-
+  promotionCode: string = '';  
+  goodEdit: boolean = false; 
   step: string = 'first'; 
+  lineMessage: string = '';
+  registerErrors: boolean = false;
 
   
   // formattedDates for database: fdDateService 
@@ -58,45 +53,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
               private tokenService: TokenService,
               private router: Router) {};
 
-   ngAfterViewInit() { 
-    
-    this.showPics = this.appService.getFormat();
-    this.appService.useCurrentColor(); // emits current colors from app service whatever set now.
-    
-   }
+  
 
-  ngOnInit() { 
-      
-
-     // subscribe to color changes from app.service.
-     this.appService.subject.subscribe( 
-       
-         // next branch
-         (cio:ColorInfoObject) => {
-              debugger;
-              // change color and format
-              this.showPics = cio.format;
-              this.useColor = cio.newColor; 
-              this.hColor = cio.hColor;
-              this.labelColor = cio.labelColor;  
-              let root = document.documentElement;   
-              root.style.setProperty('--user-color', this.useColor);
-              root.style.setProperty('--h-color', this.hColor);
-              root.style.setProperty('--label-color', this.labelColor);
-              //console.log('-reg set colors:' + this.useColor + ' h5:' + this.hColor + ' lab:' + this.labelColor)
-           
-         },
-
-         // error branch
-         (Error) => {
-
-             console.log('Error in registration subscription ' + Error);
-
-         }
-
-     );
-
-   } 
  
 
   onCancel(): void {
@@ -115,25 +73,37 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
         if(this.custId === '') {  
 
-        this.messages[0] = "Please enter customer Id."
+        //this.messages[0] = "Please enter customer Id."
+        
+        this.lineMessage = "Please enter customer Id."
+        this.registerErrors = true;
         return;
         }  
 
         if(this.scustPassword === '') {  
 
-          this.messages[0] = "Please enter a password."
+          //this.messages[0] = "Please enter a password."
+          
+          this.lineMessage = "Please enter a password." 
+          this.registerErrors = true;
           return;
         }  
 
         if(this.scustPassword2 === '') {  
 
-          this.messages[0] = "Please enter a confirmation password."
+         // this.messages[0] = "Please enter a confirmation password."
+          
+          this.lineMessage = "Please enter a confirmation password." 
+          this.registerErrors = true;
           return;
         }  
 
         if(this.scustPassword2 !== this.scustPassword) {
 
-          this.messages[0] = "Confirmation password does not match.";
+          //this.messages[0] = "Confirmation password does not match."; 
+          
+          this.lineMessage = "Confirmation password does not match."; 
+          this.registerErrors = true;
           return;
         }  
 
@@ -162,12 +132,15 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         if(debug) { 
 
                 if(!editDateParm.valid) {  
-                    this.messages[0] = editDateParm.input + " " + editDateParm.message; 
+                    this.messages[0] = editDateParm.input + " " + editDateParm.message;  
+                    this.lineMessage = editDateParm.input + " " + editDateParm.message;  
+                    this.registerErrors = true;
                     return;
                 }  
                 else {
                     this.fBirthDate = editDateParm.formatted; 
                     this.messages[0] = editDateParm.formatted + " " + "is a good date."
+                    this.lineMessage = editDateParm.formatted + " " + "is a good date."
                     return; 
                 }  
 
@@ -176,7 +149,9 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         if(!debug) { 
 
           if(!editDateParm.valid) {  
-            this.messages[0] = editDateParm.message; 
+            this.messages[0] = editDateParm.message;   
+            this.lineMessage = editDateParm.message;  
+            this.registerErrors = true;
             return; 
           }
           else { 
@@ -187,7 +162,9 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         // if step 'first' stop and confirm
         if (this.step === 'first') {
 
-          this.messages[0] = "please verify and submit again, thank you.";
+          this.messages[0] = "please verify and submit again, thank you."; 
+          this.lineMessage = "please verify and submit again, thank you."; 
+          this.registerErrors = true; // no errors but show message field at bottom.
           this.step = 'two';
           return;
 
@@ -235,6 +212,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
          if(authorizationObject.Status === "Successful") {
 
             this.messages[0] = 'CustomerId is already in use.';
+            this.lineMessage = "Customer Id aleady exists.";
+            this.registerErrors = true;
             
          } else {
 
@@ -285,6 +264,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         } else {
  
             this.messages[0] = authorizationObject.Message;
+            this.lineMessage = authorizationObject.Message; 
+            this.registerErrors = true;
             return;
 
         }
@@ -294,6 +275,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
         console.log('add cust:' + Error);
         this.messages[0] = "Could not add customer: " + Error; 
+        this.lineMessage = "Could not add customer: " + Error;  
+        this.registerErrors = true;
         return; 
 
       }
@@ -370,10 +353,14 @@ export class RegisterComponent implements OnInit, AfterViewInit {
        return;  
      }
       
+     var prefix = " * ";
      for(let item of msg) {
        this.messages.push(item)
+       this.lineMessage += prefix;
+       this.lineMessage += item;
      } 
-
+     
+     this.registerErrors = true;
      this.goodEdit = false; 
     }
 

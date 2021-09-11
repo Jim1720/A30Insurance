@@ -5,12 +5,12 @@
     <!--div style="background-color:black" class="row marginLeft" -->   
     <!-- removed better spacing.-->
     <!-- [ngClass] = "{'high-link': historySelected, 'nav-link': !historySelected}" -->  
-
+    
     <div>
 
         <nav style="background-color:black" class="navbar" margin="230px 30px 30px 30px">
 
-            <a style="color:dodgerblue" class="navbar-brand" href="#">A30 Insurance</a> 
+            <a style="color:burlywood; font-size: larger;" class="navbar-brand" href="#">A30 Insurance</a> 
             <a *ngIf="out" routerLink="/splash" [ngClass] = "{'high-link': splashSelected, 'nav-link': !splashSelected}" routerLinkActive="active" class="nav-link" href="#">Splash</a> 
             <a *ngIf="out" routerLink="/classic"  [ngClass] = "{'high-link': classicSelected, 'nav-link': !classicSelected}"   href="#">Classic</a>
             <a *ngIf="out" routerLink="/register" [ngClass] = "{'high-link': registerSelected, 'nav-link': !registerSelected}"class="nav-link"   href="#">Register</a>
@@ -19,61 +19,44 @@
             <a *ngIf="in"  routerLink="/update" [ngClass] = "{'high-link': updateSelected, 'nav-link': !updateSelected}"  class="nav-link"   href="#">Update</a>
             <a *ngIf="in"  routerLink="/claim"  [ngClass] = "{'high-link': claimSelected, 'nav-link': !claimSelected}"   class="nav-link"   href="#">Claim</a>
             <a *ngIf="in"  routerLink="/history" [ngClass] = "{'high-link': historySelected, 'nav-link': !historySelected}" class="nav-link"   href="#">History</a> 
+        
+        
+            <!-- controls form formatting pic, border, solid, none backgrounds -->
+            <a *ngIf="showStyleLink" routerLink={{savePath}}  
+                routerLinkActive="active"  style="font-size:larger;"
+                (click)="onStyleChange()" href="#">
+                {{styleLinkValue}}
+            </a> 
+            <!-- when pics lit is 'border' or 'solid' display color link to toggle -->
+            <a  *ngIf="showColorLink" routerLink={{savePath}}
+                routerLinkActive="active"
+                (click)="onColorChange()"
+                [style.color]="colorLinkValue" style="font-size:larger;" href="#">
+                {{colorLinkValue}}
+            </a> 
+        
             <a *ngIf="in"  routerLink="/signout"  class="nav-link"   href="#">Sign Out</a> 
             <a *ngIf="out" routerLink="/admin" [ngClass] = "{'high-link': adminSelected, 'nav-link': !adminSelected}"   class="nav-link"   href="#">Admin</a> 
       
 
-            <a *ngIf="in"  routerLink="/update"     routerLinkActive="active" class="gold" href="#">
+            <a *ngIf="in"  routerLink="/update"     routerLinkActive="active"   href="#"
+                style="color:burlywood; font-size:larger;">
                 {{displayName}}
             </a> 
 
-            <a *ngIf="registering"  routerLink="/splash"  routerLinkActive="active" class="gold" href="#">
+            <a *ngIf="registering"  routerLink="/splash"  routerLinkActive="active" 
+                style="color:burlywood; font-size:larger;" href="#">
                 ..Registration in Progress..
-            </a> &nbsp;
+            </a> 
 
             <a *ngIf="out" routerLink="/about"  [ngClass] = "{'high-link': aboutSelected, 'nav-link': !aboutSelected}"   routerLinkActive="active" href="#">About</a> &nbsp;   
+          
+            <!-- disable accordian menu  
             <a *ngIf="menuSwitchOptionEnabled" routerLink="/splash"    routerLinkActive="active" (click)="onSwitchMenu()" href="#">
                 Menu
-            </a> &nbsp; 
+            </a> 
+            --- accordian menu disabled -->
 
-            <!-- controls form formatting pic, border, solid, none backgrounds -->
-            <a *ngIf="showPicControls" routerLink={{savePath}}    routerLinkActive="active" (click)="onPics()" href="#">
-                {{picsLit}}
-            </a> &nbsp; 
-            <!-- when pics lit is 'border' or 'solid' display color link to toggle -->
-            <a  *ngIf="showColorControls" routerLink={{savePath}}
-                routerLinkActive="active" (click)="onColors()"
-                [style.color]="colorLit"  href="#">
-                {{colorLit}}
-            </a> &nbsp;  
-   
-            <!-- not used future -->
-            <!-- historical page mode links --> <!-- need to add href if you use these in future.-->
-            <!-- commented out due to compile errors  
-            <a *ngIf="histPage1" routerLink="/history"    routerLinkActive="active" (click)="onHistMoveMove('next')">
-                Next 
-            </a> &nbsp; 
-            <a *ngIf="histPage1" routerLink="/history"    routerLinkActive="active" (click)="onHistMove('prev')">
-                Prev 
-            </a> &nbsp; 
-            <a *ngIf="histPage1" routerLink="/history"    routerLinkActive="active" (click)="onHistMove('first')">
-                First 
-            </a> &nbsp; 
-            <a *ngIf="histPage1" routerLink="/history"    routerLinkActive="active" (click)="onHistMove('last')">
-                Last 
-            </a> &nbsp; 
-
-             !-- historical scroll mode links  
-            <a *ngIf="histScroll1" routerLink="/history" routerLinkActive="active" (click)="onHistMove('top')">
-                Top 
-            </a> &nbsp; 
-
-            <  toggle hist display  
-            <a *ngIf="histScroll1 || histPage1" routerLink="/history" routerLinkActive="active" (click)="setFormat()">
-                Toggle
-            </a> &nbsp; 
-
-             end of comments for unused code. -->
             
     </nav>
  

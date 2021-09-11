@@ -1,19 +1,14 @@
  
  <div class='container'>   
- <br>
+ 
  
 
- <div class="row"> <br> </div>
-
- <div class="row justify-content-md-center"> 
-        <h2>Customer Registration</h2> 
+ <div class="row justify-content-md-center" style="margin-top:20px;margin-bottom: 10px;"> 
+        <h2 style="color:burlywood;">Customer Registration</h2> 
 </div> 
-
- <div row style='margin-left: 195px' [class]='showPics'>  
- <!--div style='margin-left: 195px'-->  
-        
-        <br/>
-     
+ 
+ <div style='margin-left: 195px'>  
+         
             
         <div class="row  justify-content-md-left"> 
 
@@ -32,10 +27,7 @@
                     <input class="form-control st1" type='password'  [(ngModel)]="scustPassword2"><br>  
             </div>
 
-            <div class="col-xs3"> 
-                    <label for="promotionCode" class="control-label" >Promotion Code:</label> <br>
-                    <input class="form-control st1" type='text'  [(ngModel)]="promotionCode"><br>  
-            </div>
+          
 
 
         </div>  
@@ -69,6 +61,11 @@
                 <div class="col-xs3"> 
                         <label for="custPhone" class="control-label" >Phone:</label> <br>
                         <input class="form-control st1"  type='text'  [(ngModel)]="custPhone"><br>     
+                </div>
+
+                <div class="col-xs3"> 
+                        <label for="promotionCode" class="control-label" >Promotion Code:</label> <br>
+                        <input class="form-control st1" type='text'  [(ngModel)]="promotionCode"><br>  
                 </div>
          </div>
  
@@ -125,35 +122,32 @@
                 </div>
          </div> 
   </div> <!-- end show pics -->
- 
-  <div class="row"> 
-
-    <div class='row justify-content-md-center' style='margin-left: 195px; margin-top: 30px'>
-
-        <div class='col-md-2'></div>
-
-        <div class='col-md-5'> 
-        <button type='button' class='st1 b1 btn btn-primary' (click)="onRegister()">
+  
+    <div class='row justify-content-md-left' style='margin-left: 195px; margin-top: 10px'>
+        <div class='col-xs-3'> 
+        <button type='button' class='st1 btn btn-primary' (click)="onRegister()">
                 Register Customer
         </button> 
         </div> 
 
-        <div class='col-md-1'> 
-        <button type='button' style="color:white" 
-                class='st1 b1 btn btn-outline-primary' (click)="onCancel()"> 
+        <div class='col-xs-3'> 
+        <button type='button' style='margin-left:24px; margin-right: 24px; margin-bottom: 10px'
+                class='st1 btn btn-primary' (click)="onCancel()"> 
                 Cancel
         </button> <br>
-        </div>
+        </div>  
 
-    
+        <div *ngIf='registerErrors' class='col-xs-3'> 
+        <button type='button' style='margin-left:24px;'
+                class='st1 btn b1 btn-warning'
+                style="background-color:black; color: burleywood"> 
+                {{lineMessage}}
+        </button> <br>
+        </div>  
 
-    <div class='message justify-content-md-center' style='margin-left: 195px; color:lawngreen'> <br>
-            <ul><li *ngFor="let message of messages">
-                {{message}}
-            </li></ul>
-    </div> 
+    </div>
  
-</div> 
+      
 
  </div> <!-- container -->
  

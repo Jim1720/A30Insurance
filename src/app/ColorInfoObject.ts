@@ -3,10 +3,11 @@
  
 class ColorInfoObject {
 
-    newColor: string = '';
-    format: string = '';
+    userColor: string = '';
+    externalClass: string = '';
     labelColor: string = '';
-    hColor: string = ''; 
+    headerColor: string = ''; 
+    messageColor: string = '';
 
 };
 

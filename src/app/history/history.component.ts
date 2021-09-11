@@ -16,7 +16,7 @@ import { TokenService } from '../token.service';
 })
 export class HistoryComponent implements OnInit {
 
-  claims: Claim[]; 
+  claims: Claim[]  =  [];
   customerIdentification: string = ' ';
   message: string = '';
   custNames: string = '';
@@ -69,7 +69,7 @@ export class HistoryComponent implements OnInit {
   screenDate(value:string) { 
  
       // changes yyyy/mm/dd to mm/dd/yyyy show yyyy for dob 
-      console.log('in' + value);
+  //    console.log('in' + value);
       if(value === null) { 
          return 'n/a'; 
       }
@@ -86,7 +86,7 @@ export class HistoryComponent implements OnInit {
   readHistory(id: string) { 
  
     debugger;
-    console.log('read history setting up observer...') 
+//    console.log('read history setting up observer...') 
 
     this.claimService.readClaimHistory(id).subscribe(
   
@@ -97,7 +97,7 @@ export class HistoryComponent implements OnInit {
         this.claimCount = " of " + this.claims.length;
         for(var c of this.claims) { 
           var claimIdNumber =  c.ClaimIdNumber.toString();
-          console.log("*** hist claim id read is: " + claimIdNumber); 
+     //     console.log("*** hist claim id read is: " + claimIdNumber); 
           c.Procedure1.trim();
           c.Procedure2.trim();
           c.Diagnosis1.trim();
@@ -134,7 +134,7 @@ export class HistoryComponent implements OnInit {
           
         }
 
-        console.log('observer read claim history - cust id:' + id) 
+    //    console.log('observer read claim history - cust id:' + id) 
         debugger;  
         var value: number = (this.claims.length === null) ? 0 : this.claims.length;
         var lit : string = '';
@@ -210,7 +210,8 @@ export class HistoryComponent implements OnInit {
                                     action: serverAction,
                                     plan: notUsed,
                                     amount: amount,
-                                    date: today};
+                                    date: today,
+                                    _csrf: ''};
 
       debugger;                        
       // add token
@@ -252,11 +253,11 @@ export class HistoryComponent implements OnInit {
      // use alert. 
      var def = "0";
 
-     var paymentAmount:string = prompt("Please enter claim payment amount.",def)  
+     var paymentAmount: any = prompt("Please enter claim payment amount.",def)  
      if ( isNaN(parseFloat(paymentAmount)) == true ) {
  
          alert("Please enter numeric amount.");
-         return;
+         return '';
      }; 
      return paymentAmount;
 

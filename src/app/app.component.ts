@@ -2,7 +2,16 @@ import { Component, OnInit} from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';  
-import { AppService } from '../app/app.service';   
+import { AppService } from '../app/app.service';    
+import BrowserDetect   from 'browser-detect'; // uat added 12.11.19 
+import { ScreenStyleInterfaceService } from './screen.style.interface.service';
+import ColorInfoObject from './ColorInfoObject';
+import ScreenStyleObject from './ScreenStyleObject';
+import { ScreenStyleNotificationSerevice } from './screen.style.nofification.service';
+import { ScreenStyleAuthorizationService } from './screen.style.authorization.service';
+
+
+import * as Rx from "rxjs"; 
 
 // 8.7.2020 - corrected claim service inputs.
 
@@ -27,9 +36,12 @@ export class AppComponent implements OnInit {
       histPage: boolean = false;
       histScroll: boolean = false;
       savePath: string = ''
+      screenName: string = '';
       historyDisplay: string = '';
-      showColorControls: boolean = false; 
-      showPicControls: boolean = true;
+      showStyleLink: boolean = false; 
+      showColorLink: boolean = true;
+      colorLinkValue: string = '';
+      styleLinkValue : string = "Style";
       
       DoNotUse: boolean = false; // added 2.24 compile erropr
       histPage1: boolean = false;
@@ -44,21 +56,44 @@ export class AppComponent implements OnInit {
       menuSelected: boolean = false;
       updateSelected: boolean = false;
       claimSelected: boolean = false;
-      historySelected: boolean = false;
- 
+      historySelected: boolean = false; 
+
+      subject: any; // multi cast  
 
 
     constructor(private router: Router,
-                private appservice: AppService)
+                private appservice: AppService,
+                private styleinterface : ScreenStyleInterfaceService,
+                private notificationService: ScreenStyleNotificationSerevice,
+                private authorizationService: ScreenStyleAuthorizationService)
     { 
 
+      // capture router events for logic below
+      // to set link values etc.
       this.navStart = router.events.pipe( 
           filter(evt => evt instanceof NavigationStart) 
-      ) as Observable<NavigationStart>;  
+      ) as Observable<NavigationStart>;   
 
-      
+      this.adjustforie11();
 
     }; 
+
+    
+  adjustforie11() {
+
+    /* IE 11 does not support solid, outline activity */
+
+    var result: any = null;
+    result = BrowserDetect();
+    var name = result.name.toString(); 
+
+    if(name == "ie")
+    { 
+        // limit styles use for ie - remove solid and colorstyles.
+        this.styleinterface.accomodateie11();
+    }
+
+  } 
  
   onSwitchMenu() {
 
@@ -92,12 +127,7 @@ export class AppComponent implements OnInit {
 
     /* set up for navigation */
     this.navStart.subscribe(evt => { 
-
-      /* each navigation check pics on or off ; this works since
-         clicking link causes navigation to splash. */ 
  
-      this.picsLit = this.appservice.getLit(); 
-      this.colorLit = this.appservice.getColor(); 
 
       /* collapse menu if in use */
       if(this.isExpanded === true) {
@@ -114,9 +144,11 @@ export class AppComponent implements OnInit {
          register is the entry way so to speak so we set registering */ 
 
       /* no entries for claim , or adjust */
+
+    //  console.log('** navigation-router' + path);
  
-      this.showPicControls = true;
-      this.showColorControls = false;
+      this.showStyleLink = false;
+      this.showColorLink = false;
  
       this.classicSelected = false;
       this.splashSelected = false;
@@ -135,23 +167,20 @@ export class AppComponent implements OnInit {
 
           this.out = false;
           this.in = true;
-          this.registering = false; 
-          this.setColorControl();
+          this.registering = false;  
           this.menuSelected = true;
       }
       if( path === "/select-plan") {   
 
         this.out = false;
         this.in = true;
-        this.registering = false; 
-        this.setColorControl();
+        this.registering = false;  
     }
       if( path === "/update") {   
 
         this.out = false;
         this.in = true;
-        this.registering = false; 
-        this.setColorControl();
+        this.registering = false;  
         this.updateSelected = true;
     }
       if( path === "/signout") {  
@@ -165,17 +194,14 @@ export class AppComponent implements OnInit {
 
           this.out = true; /* still show the out links at this time */
           this.in = false;
-          this.registering = true; 
-          this.setColorControl();
+          this.registering = true;  
           this.registerSelected = true;
       }
       if( path === "/about") {   
 
         this.out = true; /* still show the out links at this time */
         this.in = false;
-        this.registering = false; 
-        this.showColorControls = false;
-        this.showPicControls = false; 
+        this.registering = false;  
         this.aboutSelected = true;
      
     }
@@ -183,9 +209,7 @@ export class AppComponent implements OnInit {
 
       this.out = true; /* still show the out links at this time */
       this.in = false;
-      this.registering = false; 
-      this.showColorControls = false;
-      this.showPicControls = false; 
+      this.registering = false;  
       this.splashSelected = true;
 
      }
@@ -193,17 +217,14 @@ export class AppComponent implements OnInit {
 
       this.out = true; /* still show the out links at this time */
       this.in = false;
-      this.registering = false; 
-      this.showColorControls = false;
-      this.showPicControls = false; 
+      this.registering = false;  
       this.classicSelected = true;
      }
     if( path === "/signin") {   
 
       this.out = true; /* still show the out links at this time */
       this.in = false;
-      this.registering = false; 
-      this.showPicControls = false; 
+      this.registering = false;  
       this.signinSelected = true;
     
       } 
@@ -211,8 +232,7 @@ export class AppComponent implements OnInit {
 
         this.out = true; /* still show the out links at this time */
         this.in = false;
-        this.registering = false; 
-        this.showPicControls = false;
+        this.registering = false;  
         this.adminSelected = true;
 
      }
@@ -220,38 +240,33 @@ export class AppComponent implements OnInit {
 
       this.out = true; /* still show the out links at this time */
       this.in = false;
-      this.registering = false; 
-      this.showPicControls = false; 
+      this.registering = false;  
 
    }
    if( path  === "/reset") {   
 
     this.out = true; /* still show the out links at this time */
     this.in = false;
-    this.registering = false; 
-    this.showPicControls = false;  
+    this.registering = false;  
 
- }
+    }
 
- if( path  === "/info") {   
+    if( path  === "/info") {   
 
-  this.out = true; /* still show the out links at this time */
-  this.in = false;
-  this.registering = false; 
-  this.showPicControls = false;  
+      this.out = true; /* still show the out links at this time */
+      this.in = false;
+      this.registering = false;  
 
-}
-     if( path === "/history") {
-          console.log('sf')
-          this.setFormat();  
+    }
+
+     if( path === "/history") { 
           this.historySelected = true;
       } 
 
       if ( path === '/claim') {
         this.out = false;
         this.in = true;
-        this.registering = false; 
-        this.setColorControl();
+        this.registering = false;  
         this.claimSelected = true;
       }
 
@@ -260,19 +275,143 @@ export class AppComponent implements OnInit {
         this.in = false;
         this.registering = false;  
       }
+ 
+      debugger;
+      // set style and color links based on screen.
+       this.screenName = path.substring(1);
+       this.updateStyleAndColorLinks(this.screenName);
 
-     
-    
     }); 
 
 
   }
 
-   setColorControl() { 
+  updateStyleAndColorLinks(screenName:string) {
 
-      var fmt = this.appservice.getFormat(); 
-      this.showColorControls = (fmt === 'bg-outline' || fmt == 'bg-solid') ? true : false; 
-   }
+      debugger;
+    //  console.log("** style link setter in action....");
+
+       // set showPicControls and set showColorControls
+      // picsLit and colorLit are the style and color link fields.
+      // uses new interface in revised 2.0 coding
+
+      this.showStyleLink = false;
+      this.showColorLink = false;
+      
+      var appUsesStyles = this.authorizationService.stylesTurnedOn();
+      if(!appUsesStyles)
+      {
+           return; // app does not use styles by environment variable.
+      }
+
+   //   console.log("app authorizes styles.");
+   //   console.log('screen is : ' + screenName);
+
+      var screenUsesStyles = this.authorizationService.stylesAllowedForScreen(screenName);
+      if(!screenUsesStyles)
+      {
+             return;  // styles not allowd on screen.
+      }
+
+      
+     // console.log("styles authorized for screen.");
+      // styles are allowed set default link values ; that means
+      // Style and no color link unless screen has had styles changed already
+      // in that case the screen style object is queired for the style and color.
+
+      var Style = "Style";
+      this.showStyleLink = true;  // default value.
+      this.styleLinkValue = Style;
+      this.showColorLink = false; // default value.
+      var notSetYet = null; 
+       
+      // find screen style object 
+
+      var screenStyleObject = this.styleinterface.getStyleObject(screenName);
+      if(screenStyleObject == notSetYet)
+      {
+          //  console.log("no style object");
+         //   console.log("show style link: " + this.showStyleLink);
+          //  console.log("show color link: " + this.showColorLink);
+            return;
+      }
+ 
+      //  set links based on external class = style link and
+      //  possibly color link for solid and outline styles.
+       
+      // set Style Link Value = internal class value 
+     // console.log("found style object.");
+      var Solid = "Solid";
+      var Outline = "Outline";
+
+      this.styleLinkValue = screenStyleObject.internalClass;
+
+      var shouldWeSetColorLink = (screenStyleObject.internalClass == Solid ||
+                                  screenStyleObject.internalClass == Outline);
+                                
+      if(shouldWeSetColorLink = true)
+      {
+
+          this.showColorLink = true;
+          this.colorLinkValue = screenStyleObject.userColor;
+
+      }
+
+    //  console.log("show style link: " + this.showStyleLink);
+    //  console.log("show color link: " + this.showStyleLink);
+      
+
+  }
+
+  /* ------------------- style and color change routines ------------------------- */
+
+  // respond to style link being clicked.
+  onStyleChange() 
+  {
+      // call the factory to add or update existing screen style object
+      // add used initially to create object for first style application
+      // when none has been applied.
+
+      debugger; 
+      // update style object
+      var styleObject = this.styleinterface.getNextStyle(this.screenName);
+      //
+      this.updateStyleAndColorLinks(this.screenName);
+      // emit change to observer in the screen component 
+      this.notifyScreenOfChange(styleObject); 
+      //
+     // console.log("----- style change dump ----");
+      this.styleinterface.dump();
+  }
+
+  // respond to color link being clicked.
+  onColorChange()
+  {
+
+      // update style object
+      var styleObject = this.styleinterface.getNextColor(this.screenName);
+      //
+      this.updateStyleAndColorLinks(this.screenName);
+      // emit change to observer in the screen component 
+      this.notifyScreenOfChange(styleObject); 
+       //
+      // console.log("----- color change dump ----");
+       this.styleinterface.dump();
+  }
+
+  notifyScreenOfChange(styleObject: ScreenStyleObject) { 
+
+    var cio = new ColorInfoObject();
+    cio.externalClass = styleObject.externalClass;
+    cio.userColor = styleObject.userColor;
+    cio.headerColor = styleObject.headerColor;
+    cio.labelColor = styleObject.labelColor;
+    cio.messageColor = styleObject.messageColor;
+    // emit to observer on screens.
+    this.notificationService.notifyScreensOfStyleOrColorChanges(cio);
+
+  }
+
 
   onMenu() {
 
@@ -281,83 +420,14 @@ export class AppComponent implements OnInit {
      this.useMenu = !this.useMenu; 
 
   }
-
-  onPics() {
-
-     this.appservice.toggleFormat();  
-     this.picsLit = this.appservice.getLit();
-     this.setColorControl();
-     // now we need to update the 
-     // colors.
-     
-
-  }
-
-  onHistToggleFormat() : void {
-
-     // format is 'page' or 'scroll' - toggle between them.
-
-     if(this.savePath === '/history') {} 
-     else {
-       return; // not on history screen ignore.
-     } 
-
-     this.setFormat();
-  }
-
-  setFormat() : void {
-
-     // switch between page / scroll.
-     var disp = this.appservice.toggleHistoryDisplay();  
-     this.histPage = (disp == 'page');
-     this.histScroll = (disp == 'scroll'); 
-  }
-
-  onHistMove(input: string) {
-
-      // this will page as directed or move to top depending on format for history set.
-
-      if(this.savePath === '/history') {} 
-      else {
-        return; // not on history screen ignore.
-      }  
-      var format = this.appservice.getHistoryDisplay();
-      switch(format) {
-        case 'histPage' : this.doPager(input); break;
-        case 'histScroll' : this.doScroller(input); break;
-        default: return;
-      }
-      
-
-  }
-
-  onColors() {
-
-      // change color link.
-      this.colorLit = this.appservice.toggleColor();
-
-  }
-
-    
-  doPager(input:string) { 
-
-      // page screen next, last, top, bottom
-
-  }
-
-  doScroller(input:string) {
-
-     // may scroll to top.
-  }
-
-
-
+ 
+ 
   title = 'A30Insurance'; 
   out: boolean = true;
   in:  boolean = false;
   registering: boolean = false;
   signedName: string = "John Smith"; 
-  isExpanded: boolean; 
+  isExpanded: boolean = false;
 
 }
 

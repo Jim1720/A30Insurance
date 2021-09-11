@@ -1,7 +1,7 @@
 <p>hub-component works!</p>
  
  
-<div class="row justify-content-md-center"><h2 style="color: lightblue;  font-family: Arial, Helvetica, sans-serif">
+<div class="row justify-content-md-center"><h2 style="color: burlywood;  font-family: Arial, Helvetica, sans-serif">
     Main Insurance Menu</h2></div> 
 <br>
 
@@ -13,28 +13,29 @@
   
 
     <div class='col-md-3'> 
-    <button type='button' class='st1 b1 btn btn-primary' (click)="optionUpdate()">
+    <button type='button' style="color:white"
+            class='st1 b1 btn btn-primary' (click)="optionUpdate()">
             Update Customer  
     </button> 
     </div> 
 
     <div class='col-md-2'> 
     <button type='button' style="color:white" 
-            class='st1 b1 btn btn-outline-primary' (click)="optionClaim()"> 
+            class='st1 b1 btn btn-primary' (click)="optionClaim()"> 
             File Claim
     </button> <br>
     </div>
 
     <div class='col-md-2'> 
         <button type='button' style="color:white" 
-                class='st1 b1 btn btn-outline-primary' (click)="optionHistory()"> 
+                class='st1 b1 btn btn-primary' (click)="optionHistory()"> 
                 See History
         </button> <br>
         </div>
 
     <div class='col-md-2'> 
         <button type='button' style="color:white" 
-                class='st1 b1 btn btn-outline-primary' (click)="optionPlan()"> 
+                class='st1 b1 btn btn-primary' (click)="optionPlan()"> 
                 Select Plan
         </button> <br>
         </div> 
@@ -43,8 +44,10 @@
 
 
 <div   class='row justify-content-md-center'
-        style='color: white; margin-left: 125px; margin-top: 10px'>
+        style='color: burlywood; margin-left: 125px; margin-top: 20px'>
 
+        <div class="st1">
         {{message}}
+       </div>
 
 </div>

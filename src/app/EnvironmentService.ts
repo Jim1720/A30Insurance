@@ -13,8 +13,7 @@ const httpOptions = {
 }) 
 
 export class EnvironmentService {  
- 
-    debugger;
+  
     port: string = this.as.getApiUrl(); 
     action:string = 'readenvironment'; 
 

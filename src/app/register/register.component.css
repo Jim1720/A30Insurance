@@ -1,5 +1,5 @@
 
-h2 { color: dodgerblue }
+h2 { color: white }
 
 p { color: white} 
 
@@ -12,8 +12,7 @@ p { color: white}
 
 /* .control-label { font-size:large ; color: var(--label-color) } */
 .control-label { font-size:large ; color: dodgerblue; } 
-
-.message { color: white }
+ 
 
 .bg-image {padding:40px;  margin-left: 430px; background-image : url('../../assets/sunset.jpg'); background-size: 100% 100% }
 

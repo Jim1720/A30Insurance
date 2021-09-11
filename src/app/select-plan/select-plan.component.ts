@@ -8,6 +8,7 @@ import { CustomerService } from '../customer.service';
 import Cust from '../Cust';
 import PlanInfo from '../PlanInfo'
 import PlanParm from '../PlanParm'; 
+import { NonNullAssert } from '@angular/compiler';
 
 @Component({
   selector: 'app-select-plan',
@@ -17,8 +18,8 @@ import PlanParm from '../PlanParm';
 export class SelectPlanComponent implements OnInit {
 
   message: string = '';  
-  planInfo: PlanInfo[];
-  cust: Cust; 
+  planInfo: PlanInfo[] = [];
+  cust: any = NonNullAssert; 
   selectedPlan: string = '';
 
 
@@ -37,7 +38,7 @@ export class SelectPlanComponent implements OnInit {
     } 
 
     debugger;
-    console.log('select plan - on init'); 
+ //   console.log('select plan - on init'); 
     this.setupPlanInformation();
   }
 
@@ -48,7 +49,7 @@ export class SelectPlanComponent implements OnInit {
       (planInfoData:any) => {
 
          debugger;   
-         console.log(" *** plan info read from service "); 
+        // console.log(" *** plan info read from service "); 
          debugger;
          this.planInfo = planInfoData;
 

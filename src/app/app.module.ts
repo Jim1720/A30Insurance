@@ -29,7 +29,11 @@ import { ClaimService } from './claim.service';
 import { SelectPlanComponent } from './select-plan/select-plan.component';
 import { HubComponentComponent } from './hub-component/hub-component.component';
 import { InfoComponent } from './info/info.component'; 
-import PlanService from './plan.service';
+import PlanService from './plan.service'; 
+import { ScreenStyleFactoryService } from './screen.style.factory.service';
+import { ScreenStyleInterfaceService } from './screen.style.interface.service';
+import { ScreenStyleNotificationSerevice } from './screen.style.nofification.service';
+import { ScreenStyleAuthorizationService } from './screen.style.authorization.service';
  
 const appRoutes: Routes = [
 
@@ -110,7 +114,7 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes, { enableTracing: true }), 
+    RouterModule.forRoot(appRoutes, { enableTracing: false }), 
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule 
@@ -119,7 +123,11 @@ const appRoutes: Routes = [
               ClaimService,
               PlanService,
               StorageService,
-              AppService], 
+              AppService,
+              ScreenStyleFactoryService,
+              ScreenStyleInterfaceService,
+              ScreenStyleNotificationSerevice,
+              ScreenStyleAuthorizationService], 
   bootstrap: [AppComponent]
 })
 export class AppModule { }

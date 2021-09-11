@@ -10,7 +10,7 @@
   
                     <div class='col-md-4'></div>
     
-                    <div class='col-md-4'> 
+                    <div style="color:burlywood; font-size: large;" class='col-md-4'> 
     
                             <h3>Administrator Actions</h3> 
                             
@@ -72,29 +72,21 @@
     
     <div class="row">  
   
-  
-            <div class='col-md-4'></div>
-  
-            <div class='col-md-2'> 
-  
-                    <button  type='button' class='st1 b1 btn btn-secondary' (click)="onList()">
-                                    List Customers
-                    </button> 
-            </div> 
 
-            <div class='col-md-3'> 
-  
-                <button type='button' class='st1 b1 btn btn-secondary' (click)="onResetPassword()">
+                <button  type='button' class='st1 b1 btn btn-primary' (click)="onList()"
+                         style="margin-left: 380px;">
+                                List Customers
+                </button> 
+           
+                <button type='button' class='st1 b1 btn btn-primary' (click)="onResetPassword()">
                                 Reset Password
                 </button> 
-            </div> 
-
-            <div class='col-md-3'> 
+             
   
-                <button type='button' class='st1 b1 btn btn-secondary' (click)="onResetCustId()">
+                <button type='button' class='st1 b1 btn btn-primary' (click)="onResetCustId()">
                                 Change Customer Id
                 </button> 
-            </div> 
+            
   
     </div>
   
@@ -106,7 +98,7 @@
     
             <div class='col-md-4'>  
   
-                    <div class='message'>
+                    <div style="color:burlywood;font-size: large;">
                             {{message}}
                     </div> 
                     

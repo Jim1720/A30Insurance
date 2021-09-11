@@ -12,7 +12,7 @@ import Cust from './Cust';
   
   export class StorageService  {  
 
-    appCust: Cust; 
+    appCust: any = null; 
 
     public storeCustomer(cust: Cust) {
 

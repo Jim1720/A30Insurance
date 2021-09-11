@@ -9,18 +9,20 @@ h4 { color: white; margin-left: 400px }
 .form { margin-left: 350px; margin-top: 50px;    } 
 
 /* .control-label { font-size: large; color: var(--label-color) } */
+ 
 
-.control-label { font-size: large; color: dodgerblue }
+/* on styled screens */
+.control-label { font-size: large; color: var(--label-color) }
 
-.message { color: lawngreen }
+.message { color: var(--message-color) }
 
-.bg-image { background-image : url('../../assets/road.jpg'); background-size: 100% 100% }
+.bg-image {padding:20px 50px 20px 50px; background-image : url('../../assets/road.jpg'); background-size: 100% 100%; }
 
 /* these two classes use css variable */
 
-.bg-outline { border-style: solid; border-width: 1px; border-color: var(--user-color)  }
+.bg-outline { padding: 5px 40px 5px 40px; border-style: solid; border-width: 1px; border-color: var(--user-color)  }
 
-.bg-solid { background-color : var(--user-color) }
+.bg-solid { padding: 5px 40px 5px 40px; background-color : var(--user-color) }
 
 .list-group-item { color: dodgerblue; background-color: black; }
 
@@ -35,11 +37,11 @@ input { color: var(--adj-color); font-family: Arial, Helvetica, sans-serif  }
 
 .btn-dental { color: darkblue; background: aqua}
 
-.btn-vision { color: brown; background: goldenrod}
+.btn-vision { color: brown; background: burlywood}
 
 .btn-drug { color: white; background: green}
 
- 
+.a1 { margin-bottom: 25px; }
  
 :root {
 

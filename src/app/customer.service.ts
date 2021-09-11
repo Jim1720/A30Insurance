@@ -46,7 +46,7 @@ export class CustomerService {
 
     // Update Customer
     public updateCustomer(cust: Cust): Observable<Cust> { 
-        cust['XSRF-TOKEN'] = this.token;
+        cust['XSRF_TOKEN'] = this.token;
         var url: string = this.port + 'update'; 
         var jcust = JSON.stringify(cust); 
         return this.http.put<Cust>(url, jcust, httpOptions);

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';  
+import { Component, OnInit, ɵɵsetComponentScope } from '@angular/core';  
 import  Cust  from '../Cust';
 
 import { Router } from '@angular/router';
@@ -8,6 +8,8 @@ import { AppService } from '../app.service';
 import ColorInfoObject from '../ColorInfoObject';
 import DateEdit, { dateservice } from '../dateservice'; 
 import { TokenService } from '../token.service';
+import  { ScreenStyleInterfaceService} from '../screen.style.interface.service'; 
+import { ScreenStyleNotificationSerevice} from '../screen.style.nofification.service';
 
 @Component({
   selector: 'app-update',
@@ -22,7 +24,7 @@ export class UpdateComponent implements OnInit {
   status: string = ''
   claimCountLit: string = ''; 
   actualClaimCount: number = 0;
-  showPics: string = ''; 
+  updateStyleClass: string = ''; 
   labelColor: string = '';
   hcolor: string = '';
  
@@ -52,22 +54,28 @@ export class UpdateComponent implements OnInit {
   custZip :  string = ''; 
   custPlan: string = '';
   
-  loadCust: Cust;
-  currentCustId: string;
+  loadCust: any = null; // 8.1.21
+  currentCustId: string = '';
   goodEdit: boolean = true; 
-  useColor: string = '';
+  userStyle: string = '';
+ 
 
-  mainMessage: string = ''; // main message not error liste messages.
 
-  
+  headerStyle: string = 'color: white';
+  labelStyle: string = 'color: dodgerblue;';
+  messageStyle: string ='margin-left:24px; margin-top:4px;';
+
   // formattedDates for database: fdDateService 
   fBirthDate: string = '';
+  lineMessage = '';
 
   constructor(private customerService: CustomerService,
     private storageService: StorageService, 
     private appService: AppService,
     private dateService: dateservice,
     private tokenService: TokenService,
+    private styleInterface: ScreenStyleInterfaceService,
+    private notificationService: ScreenStyleNotificationSerevice,
     private router: Router) {};
 
   ngOnInit() {
@@ -77,14 +85,7 @@ export class UpdateComponent implements OnInit {
       this.router.navigate(['/splash']);   
     }
 
-     //this.showMessage = false; // stop ui bullett from appearing ; turn on if edits later too.
-     // get claim added message
-     /* moved to menu...
-     var m1 = this.appService.getMessage();
-     if(m1 != '') {
-        //this.showMessage = true;
-        this.mainMessage = m1;
-     }*/
+    
  
 
     // populate screen with customer data.
@@ -111,35 +112,70 @@ export class UpdateComponent implements OnInit {
     this.custState = this.loadCust.custState.trim();
     this.custZip = this.loadCust.custZip.trim(); 
 
-    this.custPlan = this.loadCust.custPlan.trim();
- 
-    //this.showPics = this.appService.getFormat();
-    //console.log('update component show pics' + this.showPics)0
-
+    this.custPlan = this.loadCust.custPlan.trim();  
     
-    this.showPics = this.appService.getFormat();
-    this.useColor = this.appService.getColor(); 
+    var defaultLabelColor = "dodgerblue";
+    var defaultHeaderColor = "burleywood";
+    var defaultMessageColor = "burleywood";
+    var update = "update";
+    var Style = "bg-style";
+    var Solid = "solid";
+    var headerOffset = "margin-left:  90px; ";  
+    var semi = ";";
 
-     // subscribe to color changes from app.service.
-     this.appService.subject.subscribe(
+    debugger;
+    var screenStyleObject = this.styleInterface.getStyleObject(update);
+    if(screenStyleObject != null)
+    {
+       
+      // external class = style link value 
+      this.updateStyleClass = screenStyleObject.externalClass;
+      this.userStyle = 'color: ' + screenStyleObject.userColor;
+      if(screenStyleObject.internalClass == Solid)
+      {
+        this.userStyle = 'background-color: ' + screenStyleObject.userColor;
+      }
+      this.labelStyle = 'color: ' + screenStyleObject.labelColor;
+      this.headerStyle = 'color: ' + screenStyleObject.headerColor + semi + headerOffset;
+      this.messageStyle = 'color: ' + screenStyleObject.messageColor;
+
+    }
+    else
+    { 
+        // no style object exists until user clicks style link.  
+        this.updateStyleClass = Style;
+        this.userStyle = 'color: ' + " white; ";
+        this.labelStyle = 'color: ' + defaultLabelColor;
+        this.headerStyle = 'color: ' + defaultHeaderColor + semi + headerOffset;
+        this.messageStyle = 'color: ' +defaultMessageColor;
+
+    } 
+
+     
+     // subscribe to color changes from app.service. 
+     this.notificationService.subject.subscribe( 
       // import ColorInfoObject from '../ColorInfoObject';
       // next branch
       (cio:ColorInfoObject) => {
 
-           // change color and format 
-           this.showPics = cio.format;
-           this.useColor = cio.newColor;  
-           this.labelColor = cio.labelColor;  
-           let root = document.documentElement; 
-           root.style.setProperty('--user-color', this.useColor); 
-           root.style.setProperty('--h-color', this.hcolor);
-           root.style.setProperty('--label-color', this.labelColor);
+           debugger;
+
+           this.updateStyleClass = cio.externalClass;
+           this.userStyle = 'color: ' + cio.userColor;
+           if(cio.externalClass == "bg-solid")
+           {
+               this.userStyle = 'background-color: ' + cio.userColor;
+           }
+           this.labelStyle = 'color: ' + cio.labelColor;
+           this.headerStyle = 'color: ' + cio.headerColor;
+           this.messageStyle = 'color: ' + cio.messageColor;  
       },
 
       // error branch
-      (Error) => {
+      (Error: any) => {
 
           console.log('Error in update subscription ' + Error);
+          this.lineMessage = "error in update subscription"  + Error;
 
       }
 
@@ -151,6 +187,7 @@ export class UpdateComponent implements OnInit {
 
   onUpdate(): void {
 
+    this.lineMessage = "";
     this.messages = [];
     this.editFields();
     if(this.goodEdit === false) {
@@ -168,6 +205,7 @@ export class UpdateComponent implements OnInit {
    if(!editDateParm.valid) {  
        this.showMessage = true;
        this.messages[0] = editDateParm.message; 
+       this.lineMessage = editDateParm.message;
        return;
    }  
    else { 
@@ -250,6 +288,7 @@ export class UpdateComponent implements OnInit {
           if(!pat1.test(enteredPassword)) { 
             good = false;
             msg.push('invalid password');
+
           }   
     
           if(enteredPassword !== this.confirmed.trim()) {
@@ -306,14 +345,18 @@ export class UpdateComponent implements OnInit {
         msg.push('invalid email'); 
        }  
  
-
+       this.lineMessage = "";
+       var prefix = " * ";
        if(msg.length === 0) {
+         this.goodEdit = true;
          return;
        } 
        this.goodEdit = false;
         
        for(var item of msg) {
          this.messages.push(item);
+         this.lineMessage += prefix;
+         this.lineMessage += item;
        }
   }
 
@@ -351,14 +394,20 @@ export class UpdateComponent implements OnInit {
         // reset password field to blank on screen.
         this.entered = "";
         this.confirmed = "";
-        //
-        closureBindThis.mainMessage  = "Customer information updated.";
+        // 
+      //  console.log('set msg');
+        var msg = "Customer information updated."; 
+        this.appService.setMessage(msg); 
+    //    console.log("1");
+        this.router.navigate(['/hub']);   
+     //   console.log("2");
       },
       (Error) => {
 
-        debugger;
-        closureBindThis.messages[0] = "Could not update customer: " + Error; 
-        this.result = "error";
+        debugger; 
+        var msg = "Could not update customer " + Error;
+        this.appService.setMessage(msg); 
+        this.router.navigate(['/hub']);  
       } 
 
     );  

@@ -1,48 +1,77 @@
  
+<style>
 
+    p { color: burlywood }
+    li { color: white }
 
- <h2 style='color:goldenrod'> Insurance </h2>
-
-
- <br>
-
- <p style="color:white">
- 
- This application allows you to sign up as a customer and enter claims.
- You can adjust and pay claims. Claims have some unique fields: for instance 
- Medical claims have confine and release dates. The claim service you
- select will be used with the customer plan to compute covered cost.
-
- <br>
-
- </p><p style="color:white">
- An administrator menu is used to list customers and change customer id or passwords.
- This is for authorized users only.
-
- <br>
-
- </p><p style="color:white">
- The promotion code and email will be supplied by developer to limit use and provide authenitcation. 
- This site uses unique email but normally this would be checked against existeing usage on other 
- applications.
+</style>
+<div class='container'>  
+    <br><br>
   
- 
-</p><p style="color:white">
-Some screens allow you to change the background using the STYLE link.
-Use it to change background to picture, solid or outline. Just click again to change.
-SOLID and OUTLINE allow you to select a color.
+    <div class="row">
+  
+            <h3 style="color:burlywood"> Information </h3> 
+  
+    </div> <br>
+   
+    <div class="row"> 
+  
+        <p class='para'> Use this app to register as a customer then enter and adjust claims.</p> 
+  
+        <ul>
+          <li> register - Enter customer info : you will be prompted to select a customer
+               identification number and password. A promotion code will be provided to
+               allow registeration. 
+          </li>
+          <li> update - Revise customer information. </li>
+
+          <li> plan - you must choose a plan before you can submit a claim.</li>
+          
+          <li> claim - Enter and submit a claim. You must select a claim type: medical, dental etc. </li>
+       
+       
+       <li> history - Review claim history. An option is provided to adjust a claim with a new one,
+            or pay an existing claim. </li>
+        </ul>
+  
+  </div>
+        
+    <div class='row'> 
+  
+        <p class='para'> Customization of this display.</p>  
+    </div>
+  
+    <div class='row'>
+  
+        <ul>
+          
+          <li> Clicking on style will change update and claim screen styles. <br>
+               Available Styles: picture backgorund, solid or outline backgrounds with color link to
+               change colors.
+          </li>
+          </ul>
+        </div>
      
-
-</p><p style="color:white"> 
-The MENU link allows you to subsubstitue a drop down menu for the links.
-Click MENU again to return to links showing at top.
-
- <br>
- </p><p style="color:white">
- Thank you for trying this out!
-
-
- <br>
- <br>
+      <div class='row'>
+          
+        <p class='para'> An administration function is available for authorized individuals. </p>
+      </div>
+  
+      
+      <div class='row'>
+           <ul> 
+              <li> 
+                  Actions include: Password Reset, Customer Id Reset and Customer List functions are available.
+              </li>
+            
+              </ul>
+        </div>
+    
+      </div>
+  
+      <br>
+      <br>
+    
+         
 
  <Button class='btn btn-primary'  (click)="onReturn()">Return</Button> 

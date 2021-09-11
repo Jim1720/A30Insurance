@@ -17,8 +17,7 @@ const httpOptions = {
  
 
 export class ClaimService {  
-
-    debugger;
+ 
     port: string = this.as.getApiUrl();
 
     constructor(private http:HttpClient,

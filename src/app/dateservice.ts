@@ -17,12 +17,18 @@ export class dateservice {
      currentCentury = 0;
      currentYear2Digits = 0;
 
+     
  
-     editDate(dateParm)
+     editDate(dateParmValue:any)
      {
       // screen is 'claim' etc and will determine the year range that is if claim
       // date can be +/- 1 year. if 'register','update' date can be -90 years or now for
       // birth date or 1 month in future for medicare. 
+
+      
+      var dateParm = { input: "", screen: "", valid: false, formatted: "", message: ""}
+
+      dateParm = dateParmValue;
  
       this.setUp();
 
@@ -204,6 +210,8 @@ export class dateservice {
             }
             return true; 
         } 
+
+        return false;
 
     }
 }

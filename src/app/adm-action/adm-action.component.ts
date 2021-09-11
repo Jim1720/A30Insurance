@@ -30,7 +30,7 @@ export class AdmActionComponent implements OnInit {
   ngOnInit() { 
 
     var notSignedIn = this.appService.adminNotSignedIn(); 
-    console.log('adm action signed in: ' + notSignedIn);
+  //  console.log('adm action signed in: ' + notSignedIn);
     if (notSignedIn == true) { 
         this.router.navigate(['/splash']);   
     }

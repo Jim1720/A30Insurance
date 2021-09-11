@@ -27,7 +27,9 @@ class Cust {
     PromotionCode: string = ' ';
     extendColors: string = ' ';
     claimCount: number = 0;
-    _csrf: string = '';
+    _csrf: string = ''; 
+    appID: string = '';
+    XSRF_TOKEN: string = '';
 
 
 }

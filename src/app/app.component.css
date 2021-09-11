@@ -18,8 +18,8 @@ h4 { color: dodgerblue; }
 
  .black { color: black ;}
  
-.nav-link { background-color: black; }
+.nav-link { font-size:  larger; background-color: black; }
 
-.high-link { background-color: black; color: aqua; }
+.high-link { font-size: larger; background-color: black; color: burlywood; }
 
 .dropDownLink { color: aqua; }

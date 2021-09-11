@@ -24,7 +24,7 @@ export class SplashComponent implements OnInit {
     let monthLiteral = this.findMonth(d.getMonth());
     this.friendlyDate = monthLiteral + ' '  + dd + ' ' + yyyy + ' ' + hh + ':' + mi + ':' + ss;
   }
-  findMonth(value) {
+  findMonth(value : number) {
 
     var months = ['January', 'Feburary', 'March', 'April', 'May', 'June', 'July', 'August', 'September','October','November','December'];
     return months[value];

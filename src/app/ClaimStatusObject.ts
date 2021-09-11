@@ -8,6 +8,7 @@ class ClaimStatusObject {
    amount: string = ''
    date: string = ''
    plan: string  = '' 
+   _csrf: string = ''
 };
 
 export default ClaimStatusObject;
