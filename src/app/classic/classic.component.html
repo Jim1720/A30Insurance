@@ -39,15 +39,21 @@
 
             </div>
  
-            <div class="col-md-8"> 
+            <div class="col-md-8">  
+
+              <div class="invisible"> <!-- <== patch to start the carousel on first display of page. -->
+                <ol>
+                  <li #carousel data-target="#carouselExampleCaptions" data-slide="next"></li>
+                </ol>
+              </div> 
 
                 <div class="bd-example">
                     <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">  
-                      <ol class="carousel-indicators">
+                      <ul class="carousel-indicators">
                         <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
                         <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
                         <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
-                      </ol>
+                      </ul>
                       <div class="carousel-inner">
                         <div class="carousel-item active">
                           <img src="../../assets/lake.JPG" class="d-block w-100" alt="...">
