@@ -1,8 +1,8 @@
-<div class='container'>   
- 
-     <br>
+<div class='container'>    
+   
+     <div id="top"></div>  
 
-     <h4>Claim History Information</h4>
+     <h4>Claim History Information</h4> 
 
      <div class="row">
         <div class="col-md-4"> Subscriber/Customer: </div>  
@@ -14,29 +14,26 @@
         <div class="col-md-4 pink"> {{customerIdentification}} </div>   
      </div>
 
-     <div *ngFor="let cl of claims; let i=index">
+     <div *ngFor="let cl of claims; last as isLast; index as theIndex">
 
-         <br>
-         <div class="row"> 
+         <br> 
+         <div class="row">
+            <div id="mid"     *ngIf="theIndex==halfway"></div>
+            <div id="bot"     *ngIf="isLast"></div>
+            <!--div name="focus"  style="color:yellow" *ngIf="cl.Focused==true">i'm focused 
+              on claim {{cl.ClaimIdNumber}}</div--> 
+            <div id="act1" *ngIf="cl.Activity===1"></div> 
+            <div id="act2" *ngIf="cl.Activity===2"></div>
+         </div>
+         <div class="row">  
             <div class="col-md-4"> Claim Identification: </div>
             <div class="col-md-4"> Description   </div>  
-            <div class="col-md-4"> Sequence: &nbsp; 
-
-               <a *ngIf="cl.ClaimStatus !== 'Adjusted' 
-                          &&
-                          cl.ClaimStatus !== 'Paid'" 
-                       (click)="adjustClaim(cl)">Adjust</a>
-               
-               <a *ngIf="cl.ClaimStatus !== 'Adjusted' &&
-                         cl.ClaimStatus !== 'Paid'" 
-                        (click)="payClaim(cl)">&nbsp;Pay</a>
-
-            </div>
+            <div class="col-md-4"> Sequence: &nbsp;   </div> 
          </div> 
          <div class="row"> 
             <div class="col-md-4 blue"> {{cl.ClaimIdNumber}} </div>
             <div class="col-md-4 blue"> {{cl.ClaimDescription}}  </div>
-            <div class="col-md-4 blue"> {{i+1}} {{claimCount}}</div>  
+            <div class="col-md-4 blue"> {{theIndex+1}} {{claimCount}}</div>  
          </div>  
          
          <div class="row"> 
@@ -174,9 +171,73 @@
         <div class="col-md-4  aqua"> {{cl.PaymentDate}}  </div>  
         <div class="col-md-4  aqua"> ${{cl.PaymentAmount}} </div>  
     </div>
- 
+  
+    <div style="margin-top: 20px; "> 
+      
+      <!-- show menu, adj, and pay buttons on this row after claim -->
+
+          <button type="button" class="g1 btn btn-outline-primary"
+              (click)="gotomenu()">
+             Menu
+          </button>
+
+           <button *ngIf=stayOn type="button" class = "g4 btn btn-outline-primary"
+              (click)="toggleStay()">
+                 {{stay}}
+          </button>    
+                
+          <button type=button *ngIf="focusOn" type="button"
+             (click)="toggleFocus()"
+              class = "g4focus btn btn-outline-primary">
+             {{focus}}
+         </button>
+
+          <button type="button" class ="g5 btn btn-outline-primary"
+                   style="margin-left: 20px "
+          (click)="newClaim()">
+                New Claim
+          </button>
+
+            
+            <button  *ngIf="cl.ClaimStatus !== 'Adjusted' 
+            &&
+            cl.ClaimStatus !== 'Paid'" 
+            type="button" class="g2 btn btn-outline-primary"
+         (click)="adjustClaim(cl)">Adjust</button>
+
+         <button *ngIf="cl.ClaimStatus !== 'Adjusted' &&
+            cl.ClaimStatus !== 'Paid'"  
+            type="button" class="g3 btn btn-outline-primary"
+            (click)="payClaim(cl)">&nbsp;Pay</button> 
+
+            <!-- navigation features -->
+
+           <!--  
+                 top  mid  end   
+           -->
+           
+            <a type=button *ngIf="navOn"  type="button" class="g4top btn btn-outline-primary"
+            href="history#top">&nbsp;Top</a>  
+
+            <a *ngIf="navOn"  type="button" class="g4mid btn btn-outline-primary"
+            href="history#mid">&nbsp;Mid</a> 
+
+            <a #bot1 type=button *ngIf="navOn"  type="button" class="g4bot btn btn-outline-primary"
+            href="history#bot">&nbsp;Bot</a>  
+
+            <!-- activity buttons -->
+
+            <a type=button *ngIf="act1On"  type="button" class="g5act1 btn btn-outline-primary"
+            href="history#act1">&nbsp;{{button1Text}}</a>  
+
+            <a type=button *ngIf="act2On"  type="button" class="g5act2 btn btn-outline-primary"
+            href="history#act2">&nbsp;{{button2Text}}</a>  
+
+
+    </div> <!-- end of button row -->
 
      </div> <!-- end of loop -->
+ 
 
      
      <div class="row"><br></div>
@@ -193,5 +254,7 @@
          <div class="col-md-4">   </div>  
          <div class="col-md-4 goldenrod"> {{message}} </div>   
       </div>
+
+    
 
 </div>

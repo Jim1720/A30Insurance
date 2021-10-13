@@ -24,3 +24,46 @@ a:hover { color: white; }
 .gold { color: gold }
 
 .aqua { color: aqua }
+
+.g1 { color: aqua; border-color: white; margin-left: 20px;  }
+
+.g2 { color: yellow; border-color: white; margin-left: 20px; } 
+
+.g3 { color: red; border-color: white; margin-left: 20px;} 
+
+.g4 { color: lightgreen; border-color: white; margin-left: 20px;} 
+
+
+.g4 { color: lightgreen; border-color: white; margin-left: 20px;} 
+
+
+.g4focus { color: burlywood; border-color: white; margin-left: 20px;} 
+
+
+.g4top { color: lightgreen; border-color: white; margin-left: 20px;} 
+
+
+.g4mid { color: burlywood; border-color: white; margin-left: 20px;} 
+
+
+.g4bot { color: lightcoral; border-color: white; margin-left: 20px;} 
+
+
+.g4claim1 { color: burlywood; border-color: white; margin-left: 20px;}  
+
+
+.g4claim2 { color: burlywood ; border-color: white; margin-left: 20px;}  
+ 
+
+.g4focus { color: burlywood; border-color: white; margin-left: 20px;} 
+
+
+.g5act1 { color: burlywood; border-color: white; margin-left: 20px;} 
+
+
+.g5act2 { color:burlywood; border-color: white; margin-left: 20px;} 
+
+html {
+    scroll-behavior: smooth;
+  }
+

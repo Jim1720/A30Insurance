@@ -862,7 +862,8 @@ export class ClaimComponent implements OnInit {
     let result : boolean = false; 
     var a = adjustedClaimData.ClaimIdNumber;
     var b = adjustedClaimData.AdjustmentIdNumber;
-
+ 
+    this.appService.setFocusedClaim(b);
       
       // add token
       adjustedClaimData['_csrf'] = this.tokenService.getToken();
@@ -873,13 +874,28 @@ export class ClaimComponent implements OnInit {
   
         this.adjustmentService.clearClaimToAdjust();
 
+        // set activity for history screen buttons...
+        this.appService.setActivity(adjustedClaimData.AdjustmentIdNumber,"Adjustment");
+
 
         // set successful adjustment message
         // ie 11 var msg = `Claim ${a} has been adjusted by ${b}`;
-        var msg = 'Claim ' + a + ' has been adjusted by ' + b;
-        this.appService.setMessage(msg); 
-        
-        this.router.navigate(['/history']);   
+        var msg = '';
+        var stayOnHistory = this.appService.getHistoryStay();
+
+        if(stayOnHistory) {
+
+            // stay on = on = return to history and focus at adjusted claim.
+            this.appService.setFocusedClaim(adjustedClaimData.AdjustmentIdNumber); 
+            this.appService.setFocusedType("Adjustment");
+            this.router.navigate(['/history']);  
+            return;
+        } 
+         
+        // stay off = return to menu
+        msg = 'Claim ' + a + ' has been adjusted by ' + b; 
+        this.appService.setMessage(msg);  
+        this.router.navigate(['/hub']);   
 
       },
       (Error) => {
@@ -935,7 +951,7 @@ export class ClaimComponent implements OnInit {
     var name2 = "^[a-zA-Z0-9.#\\s\\-\\.]+$"; // city names 
     
     var name2s = "^[a-zA-Z0-9.#\\s\\-\\.]+$ || \\s"; // city names 
-    var pd = "^[0-9]{4}|\s$"; // diag proc
+    var pd = "^[a-zA-Z0-9]|\s$"; // diag proc
 
     var msg: string[] = [];
     var pat1 = new RegExp(name1);
@@ -1005,7 +1021,7 @@ export class ClaimComponent implements OnInit {
             this.processAdjustment = true;  
             var closureThis = this;
             this.readClaimToAdjust(this.claimIdToAdjust, closureThis); 
-            this.fieldColor="blue"; 
+            this.fieldColor="blue";  
             
       }  else {  
         
