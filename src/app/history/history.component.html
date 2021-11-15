@@ -1,9 +1,10 @@
 <div class='container'>    
-   
+ 
+    
      <div id="top"></div>  
 
-     <h4>Claim History Information</h4> 
-
+     <h4>Claim History Information</h4>    
+ 
      <div class="row">
         <div class="col-md-4"> Subscriber/Customer: </div>  
         <div class="col-md-4"> Identification Number: </div>  
@@ -14,16 +15,15 @@
         <div class="col-md-4 pink"> {{customerIdentification}} </div>   
      </div>
 
-     <div *ngFor="let cl of claims; last as isLast; index as theIndex">
+     <div *ngFor="let cl of claims; last as isLast; index as theIndex"> 
 
          <br> 
          <div class="row">
             <div id="mid"     *ngIf="theIndex==halfway"></div>
-            <div id="bot"     *ngIf="isLast"></div>
-            <!--div name="focus"  style="color:yellow" *ngIf="cl.Focused==true">i'm focused 
-              on claim {{cl.ClaimIdNumber}}</div--> 
-            <div id="act1" *ngIf="cl.Activity===1"></div> 
-            <div id="act2" *ngIf="cl.Activity===2"></div>
+            <div id="bot"     *ngIf="isLast"></div> 
+            <div id="act1"    *ngIf="cl.Activity===1"></div> 
+            <div id="act2"    *ngIf="cl.Activity===2"></div>
+            <div id="focus"   *ngIf="cl.Focused"></div> 
          </div>
          <div class="row">  
             <div class="col-md-4"> Claim Identification: </div>
@@ -185,12 +185,13 @@
               (click)="toggleStay()">
                  {{stay}}
           </button>    
-                
-          <button type=button *ngIf="focusOn" type="button"
-             (click)="toggleFocus()"
-              class = "g4focus btn btn-outline-primary">
-             {{focus}}
-         </button>
+
+          <button *ngIf=focusOn type="button" class = "g4 btn btn-outline-primary"
+                (click)="toggleFocus()">
+                  {{focus}}
+          </button>    
+
+                 
 
           <button type="button" class ="g5 btn btn-outline-primary"
                    style="margin-left: 20px "

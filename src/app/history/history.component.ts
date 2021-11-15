@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterContentInit } from '@angular/core';
 import { ClaimService } from '../claim.service';
 import { StorageService } from '../storage.service'; 
 import  Claim  from '../Claim';  
@@ -7,14 +7,16 @@ import { Router } from '@angular/router';
 import AppService from '../app.service';
 import ClaimStatusObject from '../ClaimStatusObject'; 
 import { TokenService } from '../token.service'; 
-import ClaimInHistory from '../ClaimInHistory'; 
+import ClaimInHistory from '../ClaimInHistory';  
+  
+declare var $ : any;
 
 @Component({
   selector: 'app-history',
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.css']
 })
-export class HistoryComponent implements OnInit, AfterViewInit {
+export class HistoryComponent implements OnInit, AfterContentInit {
  
   
   @ViewChild("bot1", { static:false, read: ElementRef} ) bottomButton! : ElementRef<any>; 
@@ -49,8 +51,8 @@ export class HistoryComponent implements OnInit, AfterViewInit {
   buttonCount = 0;
   // for loader 
   action1_claimId = '';
-  action2_claimId = '';
-
+  action2_claimId = ''; 
+ 
   /*
 
     History options: 
@@ -81,7 +83,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
 
   actionLevel = 0;  // which action buttons are available from prior actions.  
  
-  focusedClaimNumber : string = '';
+  focusedClaimNumber : string = ''; 
 
   constructor(private claimService: ClaimService,
               private storageService: StorageService,
@@ -89,12 +91,15 @@ export class HistoryComponent implements OnInit, AfterViewInit {
               private appService: AppService,
               private tokenService: TokenService,
               private router: Router) { }
-
-   ngAfterViewInit() {
  
-      // scroll to adjustment when needed.
-     this.focusProcessing(); 
+  ngAfterContentInit() {
 
+      debugger;
+      setTimeout(function () {
+        const element = document.querySelector('#focus');
+        element?.scrollIntoView();
+      },750);
+  
    }
 
    ngOnInit() {
@@ -125,8 +130,11 @@ export class HistoryComponent implements OnInit, AfterViewInit {
               this.activityProcessing();
 
               // read all claims into an array
-              readHistoryClaims: this.readHistory(this.customerIdentification);   
+              this.readHistory(this.customerIdentification);  
+
+  
   } 
+ 
 
    
   onMenu() {  
@@ -136,7 +144,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
   }
 
   toggleStay() {
-
+ 
      let stay = this.appService.getHistoryStay();
      stay = !stay;
      this.appService.setHistoryStay(stay);
@@ -147,13 +155,13 @@ export class HistoryComponent implements OnInit, AfterViewInit {
 
   
   toggleFocus() {
-
+  
     let focus = this.appService.getHistoryFocus();
     focus = !focus;
     this.appService.setHistoryFocus(focus);
     //
     this.focus = focus ? "focus on" : "focus off";
-    this.focusOn = focus;
+    this.focusOn = focus; 
 
  }
 
@@ -182,7 +190,10 @@ export class HistoryComponent implements OnInit, AfterViewInit {
    readHistory(id: string) { 
   
 
-    this.focusedClaimNumber = this.appService.getFocusedClaim(); 
+    this.focusedClaimNumber = this.appService.getFocusedClaim();  
+    var envFocusVariableSettingOn = this.appService.usingFocus();
+    var focusButtonOn = this.appService.getHistoryFocus();
+    var foundFocusClaim = false;
 
     this.claimService.readClaimHistory(id).subscribe(
   
@@ -241,11 +252,25 @@ export class HistoryComponent implements OnInit, AfterViewInit {
           
           var cid = claimIdNumber.trim();
           var fid = this.focusedClaimNumber.trim();
-          if(cid === fid) {
-             
+          
+          if(envFocusVariableSettingOn 
+             && focusButtonOn 
+             && cid === fid) { 
+
+              // html will write div with id=#focus
               c.Focused = true; 
+              foundFocusClaim = true;
+
           } 
         } 
+
+        // reset focus
+        if(foundFocusClaim) {
+
+          // turn off the focus for next history screen. 
+          this.appService.setFocusedClaim("");
+          
+        }
   
         var value: number = (this.claims.length === null) ? 0 : this.claims.length;
         var lit : string = '';
@@ -259,6 +284,8 @@ export class HistoryComponent implements OnInit, AfterViewInit {
         this.message = lit;
         this.totalClaimCount = value;  
         this.halfway =  (this.totalClaimCount - (this.totalClaimCount % 2)) / 2;  
+ 
+        
 
       },
       (Error) => {
@@ -271,42 +298,6 @@ export class HistoryComponent implements OnInit, AfterViewInit {
     );
   } 
  
-   focusProcessing() { 
-
-    focusProcessingBlock : {  
- 
-      debugger;
-                
-      var focusedClaimId : string  = this.appService.getFocusedClaim(); 
-      var haveFocusedClaim: boolean = focusedClaimId !== '';
-
-       // when 'stay on' and 'focus on' the app will try 
-       // to focus on the last paid or adjusted claim.
- 
-       var postAdjustorPayAction = this.appService.haveFocusedClaim();  
-       var focusEnvironmentOn = this.appService.usingFocus();
-       var focusButtonOn = this.focusOn;  
-
-       if(postAdjustorPayAction && 
-         focusEnvironmentOn && 
-         focusButtonOn  &&
-         haveFocusedClaim) {  
-
-         var focusType = this.appService.getFocusedType();
-         if(focusType === "Adjustment") {
- 
-             this.bottomButton.nativeElement.click();
-         }
-
-       }     
-       
-       // clear field.
-       this.appService.setFocusedClaim(''); 
-
-   } 
-
-  } 
-
    activityProcessing() {
 
       // call this before claims are loaded so the
@@ -448,7 +439,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
                this.appService.setFocusedType("Payment");
 
                // reload this screen and focus will position screen at paid claim
-               console.log("payment process calls ngOnInit.");
+               //console.log("payment process calls ngOnInit.");
                this.ngOnInit();
 
                // exit
