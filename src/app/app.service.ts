@@ -204,9 +204,11 @@ export class AppService {
 
     // all local. all test. 
 
-     //const urlPrefix = environment.urlPrefix;  
+     //const urlPrefix = environment.urlPrefix; 
+   
+    // return "http://localhost:3200/";
     
-    return "https://project20a45serverjsb09142020a1.azurewebsites.net/";
+    return "azoure url...";
 
     //return urlPrefix;
 

@@ -94,11 +94,15 @@ export class HistoryComponent implements OnInit, AfterContentInit {
  
   ngAfterContentInit() {
 
-      debugger;
+      try {
       setTimeout(function () {
         const element = document.querySelector('#focus');
         element?.scrollIntoView();
-      },750);
+      },1750);
+    } catch(Err:any) {
+      console.log("scroll into view did not work");
+      for(let p in Err) { console.log(p + ":" + Err[p]); }
+    }
   
    }
 
@@ -195,9 +199,9 @@ export class HistoryComponent implements OnInit, AfterContentInit {
     var focusButtonOn = this.appService.getHistoryFocus();
     var foundFocusClaim = false;
 
-    this.claimService.readClaimHistory(id).subscribe(
+    this.claimService.readClaimHistory(id).subscribe({
   
-      (items: any) => {  
+      next: (items: any) => {  
 
         debugger; 
         this.claims = items;
@@ -288,14 +292,14 @@ export class HistoryComponent implements OnInit, AfterContentInit {
         
 
       },
-      (Error) => {
+      error: (Error) => {
  
         console.log('read history error:' + Error);  
         this.message = "error occurred reading claim history...";
 
       } 
       
-    );
+    });
   } 
  
    activityProcessing() {
@@ -329,9 +333,10 @@ export class HistoryComponent implements OnInit, AfterContentInit {
          var action = activity.Action;
 
          // format button text
-         var claimId_last5 = claimId.substring(claimId.length-5);
+         var id = claimId.replace(":","");
+         var claimId_last2 = id.substring(id.length-2);
          var act_first3 = action.substring(0,3);
-         var button_face = act_first3 + " " + claimId_last5;
+         var button_face = act_first3 + "-" + claimId_last2;
 
          if(i === 1) { 
            this.button1Text = button_face;
@@ -413,9 +418,19 @@ export class HistoryComponent implements OnInit, AfterContentInit {
       var closureThis = this;
       
        // calling claim service to pay claim 
-       this.claimService.payClaim(cso).subscribe(
+       // ref: https://rxjs.dev/deprecations/subscribe-arguments
 
-          () => {
+       /*
+          notes: if subscribe has a error function wrap it
+          all in an object with properties as arror functins.
+
+          if it only has a next synax is simpler.
+
+       */
+
+       this.claimService.payClaim(cso).subscribe({
+
+          next: () => {
 
             var a = claim.ClaimIdNumber.trim();
             var b = amount;
@@ -440,8 +455,10 @@ export class HistoryComponent implements OnInit, AfterContentInit {
 
                // reload this screen and focus will position screen at paid claim
                //console.log("payment process calls ngOnInit.");
-               this.ngOnInit();
-
+               //this.ngOnInit();
+ 
+               // force a timely reload after the async completes.
+               this.router.navigate(["/redirecthistory"]);  
                // exit
                return;
 
@@ -454,13 +471,14 @@ export class HistoryComponent implements OnInit, AfterContentInit {
             return;
 
           },
-          (Error) => {
+          error: (Error) => {
+     
 
                var e = Error.message;
                var message = `An error occured while trying to pay claim ${e}`;
           }
 
-       );  
+        });  
    } 
    getUserPaymentData() : string {
 

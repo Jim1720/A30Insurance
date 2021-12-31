@@ -194,9 +194,9 @@ export class ClaimComponent implements OnInit {
         // be called to sync services for that claim type.
         
               // read data from api.
-       this.serviceService.makeServicesAvailable().subscribe(
+       this.serviceService.makeServicesAvailable().subscribe({
 
-            (serviceInfo: ServiceInfo[]) => {
+            next: (serviceInfo: ServiceInfo[]) => {
 
                 this.allServices = serviceInfo;
              //   console.log('ng init ' + serviceInfo.length + ' services read.');
@@ -204,11 +204,11 @@ export class ClaimComponent implements OnInit {
 
 
             },
-            (Error) => {
+            error: (Error) => {
 
                 console.log('ngInit = service call returns error ' + Error);
 
-            }); 
+            }}); 
 
        }
 
@@ -283,10 +283,10 @@ export class ClaimComponent implements OnInit {
         
      // this.showPics = this.appService.getFormat();
 
-     this.notificationService.subject.subscribe(
+     this.notificationService.subject.subscribe({
       // import ColorInfoObject from '../ColorInfoObject';
       // next branch
-      (cio:ColorInfoObject) => {
+      next: (cio:ColorInfoObject) => {
 
         debugger;
 
@@ -303,12 +303,12 @@ export class ClaimComponent implements OnInit {
       },
 
       // error branch
-      (Error:any) => {
+      error: (Error:any) => {
 
           console.log('Error in claim subscription ' + Error);
       }
       
-     ); 
+    }); 
   }
 
   onServiceChange(target: any) {
@@ -558,9 +558,9 @@ export class ClaimComponent implements OnInit {
     // get plan list
  
 
-    this.planService.readPlans().subscribe( 
+    this.planService.readPlans().subscribe({ 
 
-      (planInfoData:any) => {
+      next: (planInfoData:any) => {
 
           
       //   console.log(" *** plan info read from service ");  
@@ -608,12 +608,12 @@ export class ClaimComponent implements OnInit {
           this.insertClaim(claim);    
 
       },
-      (Error) => {
+      error: (Error) => {
 
          console.log('Plan.service - error: ' + Error);
       } 
 
-    ); 
+    }); 
   
 
   }
@@ -817,9 +817,9 @@ export class ClaimComponent implements OnInit {
 
     let result : boolean = false;
 
-    this.claimService.addClaim(claim).subscribe(
+    this.claimService.addClaim(claim).subscribe({
 
-      () => {
+      next: () => {
    
         if (this.processAdjustment === true)
         { 
@@ -831,7 +831,7 @@ export class ClaimComponent implements OnInit {
             adjustmentClaimData.AdjustedDate = this.today;
             adjustmentClaimData.AppAdjusting = "A30";
             this.stampAdjustedClaim(adjustmentClaimData);
-          
+            return; 
          }
 
          // note: the above if causes control to transfer permanently so 
@@ -841,11 +841,25 @@ export class ClaimComponent implements OnInit {
          // ie 11  var msg = `Claim ${a} has been successfully filed.`; 
          var msg = 'Claim ' + a + ' has been successfully filed.';
          this.appService.setMessage(msg); 
+
+         // set activity for history screen buttons...
+         this.appService.setActivity(a,"New"); 
+
+         var stayOnHistory = this.appService.getHistoryStay(); 
+
+         if(stayOnHistory) {
+ 
+             // stay on = on = return to history and focus at adjusted claim.
+             this.appService.setFocusedClaim(claim.ClaimIdNumber); 
+             this.appService.setFocusedType("New");
+             this.router.navigate(['/history']);  
+             return;
+         } 
          
          this.router.navigate(['/hub']);   
 
       },
-      (Error) => {
+      error: (Error) => {
 
         debugger;
         console.log('add claim:' + Error);
@@ -853,7 +867,7 @@ export class ClaimComponent implements OnInit {
         this.lineMessage = "Could not add claim: " + Error; 
       }
       
-    ); 
+    }); 
 
   } 
 
@@ -868,9 +882,9 @@ export class ClaimComponent implements OnInit {
       // add token
       adjustedClaimData['_csrf'] = this.tokenService.getToken();
 
-      this.claimService.stampClaim(adjustedClaimData).subscribe(
+      this.claimService.stampClaim(adjustedClaimData).subscribe({
 
-      () => {
+      next: () => {
   
         this.adjustmentService.clearClaimToAdjust();
 
@@ -898,7 +912,7 @@ export class ClaimComponent implements OnInit {
         this.router.navigate(['/hub']);   
 
       },
-      (Error) => {
+      error: (Error) => {
 
         debugger;
         console.log('errpr in stamp claim:' + Error);
@@ -907,7 +921,7 @@ export class ClaimComponent implements OnInit {
 
       }
       
-    ); 
+      }); 
 
 
   }
@@ -1045,9 +1059,9 @@ export class ClaimComponent implements OnInit {
 
       let result : boolean = false;
   
-      this.claimService.readClaim(claimIdToAdjust).subscribe(
+      this.claimService.readClaim(claimIdToAdjust).subscribe({
   
-        (claim:any) => {
+        next: (claim:any) => {
    
           debugger;
           result = true;  
@@ -1062,14 +1076,14 @@ export class ClaimComponent implements OnInit {
           closureThis.postAdjustmentCheckLogic();
   
         },
-        (Error) => {
+        error: (Error) => {
   
           debugger;
           //this.messages[0] = "Could not read claim: to adjust " + Error;  
           this.lineMessage = "Could not read claim: to adjust " + Error;  
         } 
   
-      );  
+      });  
     }
 
    
