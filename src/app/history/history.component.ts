@@ -8,6 +8,7 @@ import AppService from '../app.service';
 import ClaimStatusObject from '../ClaimStatusObject'; 
 import { TokenService } from '../token.service'; 
 import ClaimInHistory from '../ClaimInHistory';  
+import { __asyncDelegator } from 'tslib';
   
 declare var $ : any;
 
@@ -336,7 +337,7 @@ export class HistoryComponent implements OnInit, AfterContentInit {
          var id = claimId.replace(":","");
          var claimId_last2 = id.substring(id.length-2);
          var act_first3 = action.substring(0,3);
-         var button_face = act_first3 + "-" + claimId_last2;
+         var button_face = act_first3 + " " + claimId_last2;
 
          if(i === 1) { 
            this.button1Text = button_face;
@@ -455,10 +456,8 @@ export class HistoryComponent implements OnInit, AfterContentInit {
 
                // reload this screen and focus will position screen at paid claim
                //console.log("payment process calls ngOnInit.");
-               //this.ngOnInit();
- 
-               // force a timely reload after the async completes.
-               this.router.navigate(["/redirecthistory"]);  
+               this.ngOnInit();
+
                // exit
                return;
 
@@ -485,7 +484,18 @@ export class HistoryComponent implements OnInit, AfterContentInit {
      // use alert. 
      var def = "0";
 
+     var userCancelled = null; 
+
      var paymentAmount: any = prompt("Please enter claim payment amount.",def)  
+
+     if(paymentAmount === userCancelled)
+     {
+
+        // alert("Payment Cancelled");
+        return '';
+
+     }
+
      if ( isNaN(parseFloat(paymentAmount)) == true ) {
  
          alert("Please enter numeric amount.");
