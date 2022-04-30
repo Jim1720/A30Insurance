@@ -1,6 +1,6 @@
 p { color: white}
 
-h3 { color: white; margin-left: 400px }
+h3 { color: burlywood; margin-left: 400px }
 h4 { color: white; margin-left: 400px }
 
 .one { float: left; width: '700px '; margin: 75px; border-width: 2px; border-color: gray;}
@@ -16,7 +16,7 @@ h4 { color: white; margin-left: 400px }
 
 .message { color: var(--message-color) }
 
-.bg-image {padding:20px 50px 20px 50px; background-image : url('../../assets/road.jpg'); background-size: 100% 100%; }
+.bg-image {padding:5px 50px 5px 50px; background-image : url('../../assets/road.jpg'); background-size: 100% 100%; }
 
 /* these two classes use css variable */
 
