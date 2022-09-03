@@ -1,13 +1,12 @@
  
  <div class='container'>   
- 
- 
-
- <div class="row justify-content-md-center" style="margin-top:20px;margin-bottom: 10px;"> 
-        <h2 style="color:burlywood;">Customer Registration</h2> 
-</div> 
- 
+         
+ <h2 class="top-title">
+           Customer Registration
+ </h2> 
+  
  <div style='margin-left: 195px'>  
+
          
             
         <div class="row  justify-content-md-left"> 
@@ -48,11 +47,25 @@
                         <label for="custLast" class="control-label" >Last Name:</label> <br>
                         <input class="form-control st1"  type='text'  [(ngModel)]="custLast"><br>     
                 </div>
+                <div class="col-xs3">
+                        <label for="custGender" class="control-label" >Gender:</label> <br>
+                        <select class="form-control st1" [(ngModel)]="custGender">
+                          <option>M</option>
+                          <option>F</option>
+                  </select>
+                        <!--input class="form-control st1" type='text'  [(ngModel)]="custGender"><br-->    
+                 </div>
                 
          </div>
 
          <div class="row justify-content-md-left">
 
+                <div class="col-xs3">
+                        <label for="custBirthDate" class="control-label" >Birth Date:</label> <br>
+                        <input class="form-control st1" 
+                        placeholder="mmddyy" type='text'  [(ngModel)]="custBirthDate"><br>    
+               </div>
+               
                 <div class="col-xs3">
                     <label for="custEmail" class="control-label" >Email:</label> <br>
                     <input class="form-control st1" type='text'  [(ngModel)]="custEmail"><br>    
@@ -63,28 +76,12 @@
                         <input class="form-control st1"  type='text'  [(ngModel)]="custPhone"><br>     
                 </div>
 
-                <div class="col-xs3"> 
-                        <label for="promotionCode" class="control-label" >Promotion Code:</label> <br>
-                        <input class="form-control st1" type='text'  [(ngModel)]="promotionCode"><br>  
-                </div>
+               
          </div>
  
-
-        <div class="row justify-content-md-left">
-                <div class="col-xs3">
-                        <label for="custBirthDate" class="control-label" >Birth Date:</label> <br>
-                        <input class="form-control st1" 
-                        placeholder="mmddyy" type='text'  [(ngModel)]="custBirthDate"><br>    
-               </div>
-                <div class="col-xs3">
-                      <label for="custGender" class="control-label" >Gender:</label> <br>
-                      <select class="form-control st1" [(ngModel)]="custGender">
-                        <option>M</option>
-                        <option>F</option>
-                </select>
-                      <!--input class="form-control st1" type='text'  [(ngModel)]="custGender"><br-->    
-               </div>
-        </div>
+ 
+              
+      
 
          <div class="row justify-content-md-left">
 
@@ -96,6 +93,11 @@
                 <div class="col-xs3"> 
                         <label for="custAddress2" class="control-label" >Address2:</label> <br>
                         <input class="form-control st1" type='text'  [(ngModel)]="custAddress2"><br>     
+                </div>
+
+                <div class="col-xs3"> 
+                        <label for="promotionCode" class="control-label" >Promotion Code:</label> <br>
+                        <input class="form-control st1" type='text'  [(ngModel)]="promotionCode"><br>  
                 </div>
          </div>
 

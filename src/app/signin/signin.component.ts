@@ -32,19 +32,26 @@ export class SigninComponent {
 
     var hubScreen = 'hub';
 
+    var custId = this.custId.value ?? "";
+    var pass = this.custPassword.value ?? "";
+
     if(this.editScreen()) { 
-       this.readCustomer(this.custId.value, this.custPassword.value, hubScreen );   
+       this.readCustomer(custId, pass, hubScreen );   
     }
 
   }
 
   editScreen(): boolean {  
 
-    if(this.custId.value.length === 0) {
+    
+    var custId = this.custId.value ?? "";
+    var pass = this.custPassword.value ?? "";
+
+    if(custId.length === 0) {
       this.message = "Please enter your customer id";
       return false;
     }
-    if(this.custPassword.value.length === 0) {
+    if(pass.length === 0) {
       this.message = "Please enter your password";
       return false;
     }
@@ -57,9 +64,9 @@ export class SigninComponent {
     var closureThis = this;
     debugger;
 
-    this.customerService.readCustomerSignin(custId, custPassword).subscribe(
+    this.customerService.readCustomerSignin(custId, custPassword).subscribe({
  
-      (authorizationObject: AuthorizationObject) => {
+      next: (authorizationObject: AuthorizationObject) => {
  
         debugger; 
         this.message = ''
@@ -92,7 +99,7 @@ export class SigninComponent {
         }
 
       },
-      (Error) => {
+      error: (Error) => {
 
         debugger; 
         this.message = "Server may be down or other error contact administrator.";
@@ -100,7 +107,7 @@ export class SigninComponent {
 
       } 
       
-    );
+    });
   }
 
   

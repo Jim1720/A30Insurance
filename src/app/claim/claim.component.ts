@@ -1,4 +1,4 @@
-import { Component, OnInit, ANALYZE_FOR_ENTRY_COMPONENTS } from '@angular/core';  
+import { Component, OnInit } from '@angular/core';  
 import { ClaimService } from '../claim.service'; 
 import Claim from '../Claim';
 import { StorageService } from '../storage.service'; 
@@ -15,8 +15,7 @@ import ServiceInfo from '../ServiceInfo';
 import { PlanService } from '../plan.service';
 import PlanInfo from '../PlanInfo';
 import { ScreenStyleNotificationSerevice } from '../screen.style.nofification.service';
-import { ScreenStyleInterfaceService } from '../screen.style.interface.service';
-import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
+import { ScreenStyleInterfaceService } from '../screen.style.interface.service'; 
 
 @Component({
   selector: 'app-claim',
